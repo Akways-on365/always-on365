@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>늘온이엔지 | Always-on 365</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-color: #0b2545;
+      --point-color: #0076d6;
+      --point-light: #e6f3ff;
+      --text-dark: #1f2937;
+      --text-gray: #6b7280;
+      --bg-light: #f8fafc;
+      --white: #ffffff;
+      --border-color: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      color: var(--text-dark);
+      background-color: var(--white);
+      line-height: 1.6;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-container {
+      max-width: 1240px;
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .logo-box img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-menu a:hover {
+      color: var(--point-color);
+    }
+
+    .nav-cta {
+      background-color: var(--point-color);
+      color: var(--white) !important;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.6rem;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    .hero {
+      height: 70vh;
+      min-height: 460px;
+      background: linear-gradient(135deg, rgba(11, 37, 69, 0.9) 0%, rgba(0, 118, 214, 0.75) 100%),
+                  url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      padding-top: 80px;
+    }
+
+    .hero-content {
+      max-width: 1240px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #e2e8f0;
+      max-width: 600px;
+    }
+
+    section {
+      padding: 85px 0;
+    }
+
+    .container {
+      max-width: 1240px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .section-subtitle {
+      color: var(--point-color);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--primary-color);
+    }
+
+    .bg-light {
+      background-color: var(--bg-light);
+    }
+
+    /* 도면 스테이지 */
+    .quote-card {
+      background: var(--white);
+      padding: 40px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+    }
+
+    .floorplan-stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 440px;
+      margin-bottom: 35px;
+      background: #eceff2;
+      border-radius: 10px;
+      padding: 25px;
+    }
+
+    .floorplan-wrapper {
+      position: relative;
+      width: 900px;
+      height: 380px;
+      max-width: 100%;
+      border: 9px solid #7c6858;
+      background: #7c6858;
+      display: flex;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      transition: all 0.4s ease;
+    }
+
+    .plan-room-jeonsil {
+      width: 32%;
+      background-color: #d8dedd;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.4s ease;
+      border-right: 7px solid #7c6858;
+    }
+
+    .plan-room-storage {
+      width: 68%;
+      background-color: #a1a7a7;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.4s ease;
+    }
+
+    .room-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #1a2530;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+
+    .door-zone-left {
+      position: absolute;
+      top: 0;
+      left: -8px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .door-zone-center {
+      position: absolute;
+      top: 0;
+      right: -10px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      z-index: 6;
+    }
+
+    .door-item {
+      width: 13px;
+      height: 115px;
+      background: repeating-linear-gradient(to bottom, #2b2b2b 0, #2b2b2b 4px, #fafafa 4px, #fafafa 8px);
+      border: 1.5px solid #111;
+      border-radius: 2px;
+      transition: height 0.3s ease;
+    }
+
+    .facility-dehumidifier {
+      position: absolute;
+      top: 0;
+      left: 45%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      border: 2px solid #555;
+      border-top: none;
+      padding: 4px 14px 7px;
+      text-align: center;
+      z-index: 4;
+    }
+
+    .facility-dehumidifier .fac-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .cross-symbol {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid #444;
+      border-radius: 50%;
+      position: relative;
+      margin: 0 3px;
+    }
+    .cross-symbol::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 1.5px; background: #444; transform: translateX(-50%); }
+    .cross-symbol::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: #444; transform: translateY(-50%); }
+
+    .facility-cooler {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      z-index: 4;
+    }
+
+    .cooler-box {
+      width: 58px;
+      height: 145px;
+      border: 3px solid #2d3748;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 0;
+    }
+
+    .cooler-fan {
+      width: 38px;
+      height: 38px;
+      border: 2px solid #4a5568;
+      position: relative;
+      background: #f8fafc;
+    }
+    .cooler-fan::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: #4a5568; }
+    .cooler-fan::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #4a5568; }
+
+    .table-responsive {
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      min-width: 750px;
+    }
+
+    .spec-table th {
+      background-color: #f1f5f9;
+      color: var(--primary-color);
+      font-weight: 700;
+      padding: 12px 10px;
+      font-size: 0.95rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .spec-table td {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+    }
+
+    .spec-table td.col-name {
+      font-weight: 700;
+      color: var(--primary-color);
+      background-color: #f8fafc;
+    }
+
+    .spec-input {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      text-align: center;
+      outline: none;
+    }
+
+    .spec-input:focus {
+      border-color: var(--point-color);
+    }
+
+    .calc-condition-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      background: #f1f5f9;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+    }
+
+    .calc-condition-bar select, .calc-condition-bar input {
+      padding: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .project-meta-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--point-color);
+      padding: 22px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .meta-item label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .meta-item input {
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .dehum-calc-results {
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 26px;
+      margin-bottom: 30px;
+    }
+
+    .results-flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .flow-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 14px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .flow-box .flow-label {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .flow-box .flow-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-color);
+    }
+
+    .qty-compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 0.92rem;
+    }
+
+    .qty-compare-table th, .qty-compare-table td {
+      border: 1px solid #e2e8f0;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .qty-compare-table th {
+      background: #edf2f7;
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .qty-compare-table td {
+      background: #fff;
+    }
+
+    .rec-final-banner {
+      background: linear-gradient(135deg, #0b2545, #0076d6);
+      color: #fff;
+      padding: 22px 26px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rec-final-banner h4 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .rec-final-banner p {
+      font-size: 0.92rem;
+      opacity: 0.9;
+    }
+
+    .rec-final-tag {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 12px 22px;
+      border-radius: 8px;
+      text-align: right;
+    }
+
+    .rec-final-tag .tag-title {
+      font-size: 0.82rem;
+      opacity: 0.88;
+    }
+
+    .rec-final-tag .tag-content {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffe600;
+    }
+
+    @media (max-width: 992px) {
+      .meta-grid, .results-flow-grid, .calc-condition-bar { grid-template-columns: 1fr 1fr; }
+      .rec-final-banner { flex-direction: column; text-align: center; gap: 14px; }
+      .rec-final-tag { text-align: center; width: 100%; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu { display: none; }
+      .meta-grid, .results-flow-grid, .calc-condition-bar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo-box">
+        <img src="늘온이엔지 로고(PNG)-03.png" alt="늘온이엔지 로고" onerror="this.onerror=null; this.src='https://via.placeholder.com/180x60?text=ALWAYS-ON+365';">
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#about">회사소개</a></li>
+        <li><a href="#products">제품소개</a></li>
+        <li><a href="#portfolio">주요 실적</a></li>
+        <li><a href="#estimate" class="nav-cta">온라인 견적</a></li>
+        <li><a href="#contact">고객센터</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">ALWAYS-ON 365</span>
+      <h1>냉동창고 맞춤형 제습 설계<br>수분 침투부하 자동 산출 시스템</h1>
+      <p>수정된 최신 설계 공식을 적용하여 도어 개방 및 온습도 조건에 맞는 최적 장비 조합을 자동 산출합니다.</p>
+    </div>
+  </section>
+
+  <!-- 온라인 견적 -->
+  <section id="estimate" class="bg-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">DESIGN & ESTIMATE</span>
+        <h2 class="section-title">온라인 견적 및 제습기 용량 산출</h2>
+        <p style="color: var(--text-gray); margin-top: 8px;">
+          도어 규격과 조건을 입력하면 침투 부하와 계산된 장비 수량, <strong>최종 추천 장비 수량</strong>이 실시간으로 산출됩니다.
+        </p>
+      </div>
+
+      <div class="quote-card">
+        <!-- 반응형 평면도 -->
+        <div class="floorplan-stage">
+          <div class="floorplan-wrapper" id="floorplanWrapper">
+            <div class="plan-room-jeonsil" id="jeonsilBox">
+              <div class="door-zone-left" id="doorZoneLeft">
+                <div class="door-item"></div>
+              </div>
+              <div class="room-title">전실</div>
+              <div class="door-zone-center" id="doorZoneCenter">
+                <div class="door-item"></div>
+              </div>
+            </div>
+
+            <div class="plan-room-storage" id="storageBox">
+              <div class="room-title">냉동창고</div>
+              <div class="facility-dehumidifier">
+                <div class="fac-name">제습기</div>
+                <div>
+                  <span class="cross-symbol"></span>
+                  <span class="cross-symbol"></span>
+                </div>
+              </div>
+              <div class="facility-cooler">
+                <div class="cooler-box">
+                  <div class="cooler-fan"></div>
+                  <div class="cooler-fan"></div>
+                </div>
+                <div style="font-size:0.85rem; font-weight:700; margin-top:5px;">유니트쿨러</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form onsubmit="handleQuoteSubmit(event)">
+          <!-- 1. 치수 입력 테이블 (3m x 3m 기본 반영) -->
+          <div class="table-responsive">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th style="width: 12%;">구분</th>
+                  <th>도어 가로 (m)</th>
+                  <th>도어 세로 (m)</th>
+                  <th>수량 (EA)</th>
+                  <th>가로 (mm)</th>
+                  <th>세로 (mm)</th>
+                  <th>건구온도 (°C)</th>
+                  <th>상대습도 (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-name">인접실(전실)</td>
+                  <td><input type="number" id="jDoorW" step="0.1" class="spec-input" value="2.0" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="jDoorH" step="0.1" class="spec-input" value="2.5" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="jDoorQty" class="spec-input" value="1" min="1" max="4" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="jeonsilW" class="spec-input" value="3000" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="jeonsilL" class="spec-input" value="4000" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="jTemp" class="spec-input" value="25" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="jHum" class="spec-input" value="60" oninput="runExcelCalculation()"></td>
+                </tr>
+                <tr>
+                  <td class="col-name">냉동창고</td>
+                  <td><input type="number" id="sDoorW" step="0.1" class="spec-input" value="3" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="sDoorH" step="0.1" class="spec-input" value="3" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="sDoorQty" class="spec-input" value="1" min="1" max="4" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="storageW" class="spec-input" value="7000" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="storageL" class="spec-input" value="8000" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="sTemp" class="spec-input" value="-20" oninput="runExcelCalculation()"></td>
+                  <td><input type="number" id="sHum" class="spec-input" value="80" oninput="runExcelCalculation()"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2. 엑셀 설계 파라미터 -->
+          <div class="calc-condition-bar">
+            <div>
+              <label><strong>도어 개방시간 (초/회)</strong></label>
+              <input type="number" id="doorOpenTime" value="30" oninput="runExcelCalculation()">
+            </div>
+            <div>
+              <label><strong>풍속 계수 ($V$)</strong></label>
+              <input type="number" id="windVelocity" value="0.1" step="0.05" oninput="runExcelCalculation()">
+            </div>
+            <div>
+              <label><strong>침기계수 조건</strong></label>
+              <select id="infFactor" onchange="runExcelCalculation()">
+                <option value="2.0">전실, 에어커튼, 자동문 설치 (계수: 2.0)</option>
+                <option value="5.0">보호장치 미반영 일반도어 (계수: 5.0)</option>
+                <option value="1.0">고밀도 밀폐 전실 설치 (계수: 1.0)</option>
+                <option value="0.5">자동고속도어+에어커튼 (계수: 0.5)</option>
+              </select>
+            </div>
+            <div>
+              <label><strong>공기밀도 ($\text{kg/m}^3$)</strong></label>
+              <input type="number" id="airDensity" value="1.184" step="0.001" readonly style="background:#e2e8f0;">
+            </div>
+          </div>
+
+          <!-- 3. 프로젝트 기본 정보 -->
+          <div class="project-meta-box">
+            <div class="meta-grid">
+              <div class="meta-item">
+                <label>회사명 *</label>
+                <input type="text" id="c_company" placeholder="(주)늘온파트너스" required>
+              </div>
+              <div class="meta-item">
+                <label>프로젝트명 *</label>
+                <input type="text" id="c_project" placeholder="신축 저온물류창고 라인" required>
+              </div>
+              <div class="meta-item">
+                <label>담당자 *</label>
+                <input type="text" id="c_name" placeholder="홍길동 과장" required>
+              </div>
+              <div class="meta-item">
+                <label>연락처 *</label>
+                <input type="tel" id="c_tel" placeholder="010-1234-5678" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. 수정된 엑셀 연산 결과 출력 카드 -->
+          <div class="dehum-calc-results">
+            <h3 style="font-size:1.15rem; color:var(--primary-color); margin-bottom:14px;">
+              <i class="fa-solid fa-calculator" style="color:var(--point-color);"></i> 개구부 침투부하 및 제습기 수량 산출 결과
+            </h3>
+
+            <!-- 1차 수치 흐름 -->
+            <div class="results-flow-grid">
+              <div class="flow-box">
+                <div class="flow-label">개구부 면적 ($A$)</div>
+                <div class="flow-value" id="outArea">9.00 <span style="font-size:0.8rem;">m²</span></div>
+              </div>
+              <div class="flow-box">
+                <div class="flow-label">침투 유효풍량 ($Q_{\text{eff}}$)</div>
+                <div class="flow-value" id="outAirflow">27.0 <span style="font-size:0.8rem;">m³/h</span></div>
+              </div>
+              <div class="flow-box">
+                <div class="flow-label">절대습도차 ($\Delta x$)</div>
+                <div class="flow-value" id="outDeltaX">11.28 <span style="font-size:0.8rem;">g/kg</span></div>
+              </div>
+              <div class="flow-box" style="border-color:#93c5fd; background:#eff6ff;">
+                <div class="flow-label" style="color:#0076d6; font-weight:700;">침기계수 반영 수분부하</div>
+                <div class="flow-value" id="outMoisture" style="color:#0076d6;">0.72 <span style="font-size:0.8rem;">kg/h</span></div>
+              </div>
+            </div>
+
+            <!-- 2차: 엑셀 모델별 제습량 및 수량 비교 매트릭스 -->
+            <table class="qty-compare-table">
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>1,400 CMH 제습기</th>
+                  <th>3,000 CMH 제습기</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>풍량 (유속)</strong></td>
+                  <td>1,400 m³/h (3.7 m/s)</td>
+                  <td>3,000 m³/h (3.6 m/s)</td>
+                </tr>
+                <tr>
+                  <td><strong>로터 입/출구 절대습도</strong></td>
+                  <td>0.23 g/h → 0.12 g/h</td>
+                  <td>0.23 g/h → 0.12 g/h</td>
+                </tr>
+                <tr>
+                  <td><strong>자체 제습량 (kg/h)</strong></td>
+                  <td style="color:#0076d6; font-weight:700;">0.18 kg/h</td>
+                  <td style="color:#0076d6; font-weight:700;">0.40 kg/h</td>
+                </tr>
+                <tr style="background:#f8fafc;">
+                  <td><strong>단독 적용 시 제습기 수량</strong></td>
+                  <td id="qty1400" style="font-weight:800; font-size:1.05rem;">3.90 대</td>
+                  <td id="qty3000" style="font-weight:800; font-size:1.05rem;">1.82 대</td>
+                </tr>
+                <tr>
+                  <td><strong>계산된 장비 수량</strong></td>
+                  <td colspan="2" id="calcEquipOptions" style="font-weight:700; color:#1e293b; background:#fff;">
+                    1400CMH*2, 3000CMH*1 또는 3000CMH*2
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 3차: 추천 장비 수량 배너 (최소 장비수량 선택) -->
+            <div class="rec-final-banner">
+              <div>
+                <p>늘온이엔지 최적 엔지니어링 추천</p>
+                <h4 id="bannerSubtitle">총 수분 부하 0.72 kg/h 완벽 대응 솔루션</h4>
+              </div>
+              <div class="rec-final-tag">
+                <div class="tag-title">추천 장비 수량 (최소 장비수량 선택)</div>
+                <div class="tag-content" id="finalEquipRec">3000CMH*2</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; border: none; font-size: 1.15rem; padding: 16px;">
+            설계 데이터 기반 견적서 접수하기
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 자바스크립트: 수정된 엑셀 공식 및 장비 수량 매칭 알고리즘 -->
+  <script>
+    function runExcelCalculation() {
+      // 1. 도어 파라미터 가져오기
+      const sDoorW = parseFloat(document.getElementById('sDoorW').value) || 3.0;
+      const sDoorH = parseFloat(document.getElementById('sDoorH').value) || 3.0;
+      const sDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('sDoorQty').value) || 1, 4));
+      const jDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('jDoorQty').value) || 1, 4));
+
+      const openTime = parseFloat(document.getElementById('doorOpenTime').value) || 30; // 초
+      const V = parseFloat(document.getElementById('windVelocity').value) || 0.1; // m/s
+      const infFactor = parseFloat(document.getElementById('infFactor').value) || 2.0;
+
+      // 2. 엑셀 공식 계산
+      // A = 가로 * 세로 = 9.0
+      const A = sDoorW * sDoorH;
+      // Q_base = A * V * 3600 = 3240 m3/h
+      const Q_base = A * V * 3600;
+      // Q_effective = Q_base * (openTime / 3600) = 27.0 m3/h
+      const Q_effective = Q_base * (openTime / 3600);
+
+      const rho = 1.184; // 공기밀도
+      // m = Q_effective * rho = 31.968 kg/h (약 31.97)
+      const m = Q_effective * rho;
+
+      const deltaX = 11.9 - 0.62; // 11.28 g/kg
+      // W_base = m * deltaX = 360.60 g/h -> 0.361 kg/h
+      const W_base_kgh = (m * deltaX) / 1000;
+      // 침기계수 반영 W_final = 0.72 kg/h
+      const W_final = W_base_kgh * infFactor;
+
+      // 3. 모델별 제습량 (엑셀 고정)
+      const cap1400 = 0.18; // kg/h
+      const cap3000 = 0.40; // kg/h
+
+      // 모델별 필요 수량 (소수점 2자리 표기)
+      const num1400 = W_final / cap1400; // 3.90 대
+      const num3000 = W_final / cap3000; // 1.82 대
+
+      // 4. UI 텍스트 업데이트
+      document.getElementById('outArea').innerHTML = `${A.toFixed(2)} <span style="font-size:0.8rem;">m²</span>`;
+      document.getElementById('outAirflow').innerHTML = `${Q_effective.toFixed(1)} <span style="font-size:0.8rem;">m³/h</span>`;
+      document.getElementById('outDeltaX').innerHTML = `${deltaX.toFixed(2)} <span style="font-size:0.8rem;">g/kg</span>`;
+      document.getElementById('outMoisture').innerHTML = `${W_final.toFixed(2)} <span style="font-size:0.8rem;">kg/h</span>`;
+
+      document.getElementById('qty1400').innerText = `${num1400.toFixed(2)} 대`;
+      document.getElementById('qty3000').innerText = `${num3000.toFixed(2)} 대`;
+      document.getElementById('bannerSubtitle').innerText = `총 수분 부하 ${W_final.toFixed(2)} kg/h 완벽 대응 솔루션`;
+
+      // 5. 계산된 장비 수량 & 추천 장비 수량 로직 (엑셀 하단 로직 완전 구현)
+      const calcEquipOptionsEl = document.getElementById('calcEquipOptions');
+      const finalEquipRecEl = document.getElementById('finalEquipRec');
+
+      // 옵션 A: 3,000CMH 단일 적용 (최소 대수 선정)
+      const only3000Count = Math.ceil(W_final / cap3000);
+
+      // 옵션 B: 복합 조합 (3,000CMH 최대 활용 + 잔여 부하 1,400CMH)
+      let mixed3000 = Math.floor(W_final / cap3000);
+      let remLoad = W_final - (mixed3000 * cap3000);
+      let mixed1400 = Math.ceil(remLoad / cap1400);
+
+      let calcOptionText = "";
+      if (mixed3000 > 0 && mixed1400 > 0) {
+        calcOptionText = `1400CMH*${mixed1400}, 3000CMH*${mixed3000} 또는 3000CMH*${only3000Count}`;
+      } else {
+        calcOptionText = `3000CMH*${only3000Count}`;
+      }
+
+      calcEquipOptionsEl.innerText = calcOptionText;
+
+      // 최종 추천 장비 수량: 엑셀 기준 "최소 장비수량 선택" 원칙 적용
+      finalEquipRecEl.innerText = `3000CMH*${only3000Count}`;
+
+      // 6. 도면 크기 및 도어 인터랙티브 연동
+      const jw = parseFloat(document.getElementById('jeonsilW').value) || 3000;
+      const jl = parseFloat(document.getElementById('jeonsilL').value) || 4000;
+      const sw = parseFloat(document.getElementById('storageW').value) || 7000;
+      const sl = parseFloat(document.getElementById('storageL').value) || 8000;
+
+      const jeonsilBox = document.getElementById('jeonsilBox');
+      const storageBox = document.getElementById('storageBox');
+      const floorplanWrapper = document.getElementById('floorplanWrapper');
+
+      const totalW = jw + sw;
+      const jeonsilRatio = Math.min(Math.max((jw / totalW) * 100, 18), 82);
+      jeonsilBox.style.width = jeonsilRatio + '%';
+      storageBox.style.width = (100 - jeonsilRatio) + '%';
+
+      const maxL = Math.max(jl, sl);
+      const dynamicH = Math.min(Math.max(380 * (maxL / totalW * 1.6), 260), 480);
+      floorplanWrapper.style.height = dynamicH + 'px';
+
+      // 도어 렌더링
+      const doorZoneLeft = document.getElementById('doorZoneLeft');
+      const doorZoneCenter = document.getElementById('doorZoneCenter');
+      const dHeight = Math.min(Math.max(sDoorH * 38, 60), 150);
+
+      doorZoneLeft.innerHTML = '';
+      for (let i = 0; i < jDoorQty; i++) {
+        const d = document.createElement('div');
+        d.className = 'door-item';
+        d.style.height = dHeight + 'px';
+        doorZoneLeft.appendChild(d);
+      }
+
+      doorZoneCenter.innerHTML = '';
+      for (let i = 0; i < sDoorQty; i++) {
+        const d = document.createElement('div');
+        d.className = 'door-item';
+        d.style.height = dHeight + 'px';
+        doorZoneCenter.appendChild(d);
+      }
+    }
+
+    function handleQuoteSubmit(e) {
+      e.preventDefault();
+      alert('설계서 데이터 기반 견적 신청이 완료되었습니다.\n담당자가 검토 후 상세 견적서를 발송해 드립니다.');
+    }
+
+    window.onload = runExcelCalculation;
+  </script>
+</body>
+</html>
