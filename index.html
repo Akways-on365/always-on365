@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>늘온이엔지 | Always-on 365</title>
+  <!-- 프리텐다드 폰트 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <!-- 폰트어썸 아이콘 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- 다음 우편번호 API -->
+  <!-- Daum 우편번호 API -->
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  
+
   <style>
     :root {
       --primary-color: #0b2545;
@@ -37,9 +39,10 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      position: relative;
     }
 
-    /* ---------------- Header & Nav ---------------- */
+    /* ---------------- Header & Navigation ---------------- */
     header {
       position: fixed;
       top: 0;
@@ -48,7 +51,8 @@
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(10px);
       box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
-      z-index: 1000;
+      z-index: 100;
+      pointer-events: auto;
     }
 
     .header-inner {
@@ -108,6 +112,7 @@
       border-radius: 20px;
       font-weight: 800 !important;
       border: 1px solid #d8b4fe;
+      cursor: pointer;
     }
 
     .top-auth-bar .auth-divider {
@@ -165,11 +170,13 @@
     main {
       flex: 1;
       padding-top: 90px;
+      position: relative;
+      z-index: 1;
     }
 
     .page-view {
       display: none;
-      animation: fadeIn 0.3s ease-in-out;
+      animation: fadeIn 0.25s ease-in-out;
     }
 
     .page-view.active {
@@ -177,15 +184,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ---------------- Hero Section (홈 메인 전용) ---------------- */
+    /* ---------------- Hero Section (메인) ---------------- */
     .hero {
       height: 75vh;
       min-height: 480px;
-      background: linear-gradient(135deg, rgba(11, 37, 69, 0.9) 0%, rgba(0, 118, 214, 0.75) 100%),
+      background: linear-gradient(135deg, rgba(11, 37, 69, 0.92) 0%, rgba(0, 118, 214, 0.78) 100%),
                   url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
       display: flex;
       align-items: center;
@@ -242,10 +249,18 @@
       color: #fff;
     }
 
+    .btn-main-primary:hover {
+      background: #005fae;
+    }
+
     .btn-main-outline {
       border: 1px solid rgba(255,255,255,0.7);
       background: transparent;
       color: #fff;
+    }
+
+    .btn-main-outline:hover {
+      background: rgba(255,255,255,0.15);
     }
 
     section {
@@ -766,7 +781,7 @@
       color: #ffe600;
     }
 
-    /* ---------------- 5. 관리자 전용 대시보드 뷰 스타일 ---------------- */
+    /* ---------------- 5. 관리자 전용 대시보드 뷰 ---------------- */
     .admin-dashboard-container {
       padding: 40px 0 80px;
     }
@@ -962,23 +977,25 @@
       font-size: 0.85rem;
     }
 
-    /* ---------------- 모달 창 ---------------- */
+    /* ---------------- 모달 창 (클릭 차단 방지 완전 격리) ---------------- */
     .auth-modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
       z-index: 2000;
-      display: none;
+      display: none !important; /* 기본 차단 */
+      pointer-events: none !important; /* 클릭 투과 보장 */
       justify-content: center;
       align-items: center;
     }
 
     .auth-modal-overlay.active {
-      display: flex;
+      display: flex !important;
+      pointer-events: auto !important; /* 열렸을 때만 인터랙션 허용 */
     }
 
     .auth-modal-box {
@@ -987,7 +1004,7 @@
       max-width: 500px;
       border-radius: 14px;
       padding: 34px 30px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
       position: relative;
       max-height: 90vh;
       overflow-y: auto;
@@ -1099,14 +1116,15 @@
       color: var(--point-color);
     }
 
-    /* ---------------- 다음 주소 레이어 모달 ---------------- */
+    /* ---------------- 다음 주소 레이어 모달 (클릭 차단 완전 방지) ---------------- */
     #postcodeModalWrap {
-      display: none;
+      display: none !important;
+      pointer-events: none !important;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: rgba(0, 0, 0, 0.7);
       z-index: 3000;
       justify-content: center;
@@ -1114,7 +1132,8 @@
     }
 
     #postcodeModalWrap.active {
-      display: flex;
+      display: flex !important;
+      pointer-events: auto !important;
     }
 
     .postcode-content-box {
@@ -1342,7 +1361,7 @@
             <button class="model-tab-btn" id="tabBtn-300" onclick="switchProductModel('300')">SRDU-300</button>
           </div>
 
-          <!-- 1) SRDU-140 전용 상세 뷰 -->
+          <!-- 1) SRDU-140 상세 -->
           <div id="detail-SRDU-140" class="product-detail-view active">
             <div class="prod-feature-box">
               <h4>SRDU-140 (1,400 CMH 급 저온 제습 시스템)</h4>
@@ -1394,7 +1413,7 @@
             </p>
           </div>
 
-          <!-- 2) SRDU-300 전용 상세 뷰 -->
+          <!-- 2) SRDU-300 상세 -->
           <div id="detail-SRDU-300" class="product-detail-view">
             <div class="prod-feature-box">
               <h4>SRDU-300 (3,000 CMH 급 대용량 제습 시스템)</h4>
@@ -1637,7 +1656,7 @@
       </section>
     </div>
 
-    <!-- [VIEW 5] 고객센터 뷰 (수정 완료) -->
+    <!-- [VIEW 5] 고객센터 뷰 -->
     <div id="view-contact" class="page-view">
       <section id="contact">
         <div class="container">
@@ -1649,9 +1668,9 @@
             <div class="contact-card">
               <i class="fa-solid fa-phone"></i>
               <div class="contact-info">
-                <h4>기술 상담</h4>
-                <p style="font-size: 1.4rem; font-weight: 700; color: var(--point-color); margin: 5px 0;">031-365-3253</p>
-                <p>평일: 08:30 ~ 17:30 (점심시간 11:30 ~ 12:30)<br>365일 긴급 엔지니어링 기술 대응 지원</p>
+                <h4>기술 상담 및 긴급 접수</h4>
+                <p style="font-size: 1.4rem; font-weight: 700; color: var(--point-color); margin: 5px 0;">031-000-0000</p>
+                <p>평일: 09:00 ~ 18:00 (점심시간 12:00 ~ 13:00)<br>365일 긴급 엔지니어링 기술 대응 지원</p>
               </div>
             </div>
             <div class="contact-card">
@@ -1692,7 +1711,7 @@
             </div>
           </div>
 
-          <!-- 1. 견적 접수 이력 테이블 (선택 다운로드 지원) -->
+          <!-- 1. 견적 접수 이력 테이블 -->
           <div class="admin-table-box">
             <div class="box-header">
               <h3><i class="fa-solid fa-calculator" style="color: var(--point-color);"></i> 실시간 온라인 견적 접수 내역</h3>
@@ -1768,7 +1787,7 @@
           <p><strong>주식회사 늘온이엔지</strong></p>
           <p>대표자: 홍길동 | 사업자등록번호: 000-00-00000</p>
           <p>주소: 경기도 안산시 단원구 엔지니어링로 123 늘온빌딩 4층</p>
-          <p>대표전화: 031-365-3253 | 팩스: 031-000-0001</p>
+          <p>대표전화: 031-000-0000 | 팩스: 031-000-0001</p>
         </div>
       </div>
       <div class="footer-bottom">
@@ -1912,7 +1931,7 @@
     </div>
   </div>
 
-  <!-- 독립 다음 주소 레이어 모달 -->
+  <!-- 독립 Daum 주소 레이어 모달 -->
   <div id="postcodeModalWrap">
     <div class="postcode-content-box">
       <div class="postcode-header-bar">
@@ -1990,7 +2009,7 @@
 
   <script>
     // ----------------------------------------------------
-    // 관리자 지정 이메일 목록
+    // 관리자 계정 목록
     // ----------------------------------------------------
     const ADMIN_EMAILS = [
       "mjeong228@naver.com",
@@ -2002,7 +2021,7 @@
     }
 
     // ----------------------------------------------------
-    // 1. 페이지 전환 (SPA)
+    // 1. 단일 페이지(SPA) 화면 전환
     // ----------------------------------------------------
     function navigateToPage(pageKey) {
       if (pageKey === 'estimate') {
@@ -2048,7 +2067,7 @@
     }
 
     // ----------------------------------------------------
-    // 2. 제품소개 서브 모델 분할 탭 (SRDU-140 / SRDU-300)
+    // 2. 제품소개 모델 탭 전환
     // ----------------------------------------------------
     function switchProductModel(model) {
       document.getElementById('tabBtn-140').classList.remove('active');
@@ -2066,7 +2085,7 @@
     }
 
     // ----------------------------------------------------
-    // 3. 도로명 주소 검색 (독립 모달 레이어 방식)
+    // 3. 도로명 주소 검색 (Daum Postcode)
     // ----------------------------------------------------
     function openDaumPostcodeModal() {
       const wrap = document.getElementById('postcodeModalWrap');
@@ -2112,7 +2131,7 @@
     }
 
     // ----------------------------------------------------
-    // 4. 견적서 이메일 전송 & 관리자 상세 견적DB 저장
+    // 4. 견적서 접수 및 전송
     // ----------------------------------------------------
     let currentCalcData = {};
 
@@ -2134,7 +2153,6 @@
 
       const dateStr = new Date().toLocaleString('ko-KR');
 
-      // 전실 및 냉동창고 입력 규격 수집
       const jDoorW = document.getElementById('jDoorW').value;
       const jDoorH = document.getElementById('jDoorH').value;
       const jDoorQty = document.getElementById('jDoorQty').value;
@@ -2151,7 +2169,6 @@
       const sTemp = document.getElementById('sTemp').value;
       const sHum = document.getElementById('sHum').value;
 
-      // 관리자 DB(localStorage)에 상세 설계 파라미터까지 전체 저장
       const quoteRecord = {
         id: Date.now(),
         date: dateStr,
@@ -2163,18 +2180,15 @@
         bizNo: currentUser.bizNo || '미입력',
         address: `${currentUser.address || ''} ${currentUser.addressDetail || ''}`.trim() || '미입력',
         
-        // 전실 상세 스펙
         jeonsilDim: `${jeonsilW}m × ${jeonsilL}m`,
         jeonsilDoor: `${jDoorW}m × ${jDoorH}m (${jDoorQty}대)`,
         jeonsilAir: `${jTemp}℃ / ${jHum}%`,
 
-        // 냉동창고 상세 스펙
         storageDim: `${storageW}m × ${storageL}m`,
         storageDoor: `${sDoorW}m × ${sDoorH}m (${sDoorQty}대)`,
         storageAir: `${sTemp}℃ / ${sHum}%`,
         sTemp: `${sTemp} ℃`,
 
-        // 엔지니어링 계산 결과 (침기계수 5.0 고정)
         infFactor: "5.0",
         area: currentCalcData.area || (parseFloat(sDoorW) * parseFloat(sDoorH)).toFixed(2) + " m²",
         qEff: currentCalcData.qEff || ((parseFloat(sDoorW) * parseFloat(sDoorH)) * 0.1 * 3600 * (30 / 3600)).toFixed(1) + " m³/h",
@@ -2183,12 +2197,10 @@
         status: "접수완료"
       };
 
-      // 1) 관리자 DB 저장
       let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       quoteList.unshift(quoteRecord);
       localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
 
-      // 2) FormSubmit 이메일 전송 페이로드
       const payload = {
         _subject: `[늘온이엔지 견적접수] ${quoteRecord.company} - ${quoteRecord.project}`,
         접수일시: quoteRecord.date,
@@ -2234,7 +2246,7 @@
     }
 
     // ----------------------------------------------------
-    // 5. 관리자 콘솔 대시보드 렌더링 & 선택 CSV 다운로드 로직
+    // 5. 관리자 콘솔 대시보드 및 CSV 다운로드
     // ----------------------------------------------------
     function renderAdminDashboard() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
@@ -2319,7 +2331,6 @@
       }
     }
 
-    // 엑셀(CSV) 생성 공통 함수
     function exportToCSV(dataArray, filename) {
       const headers = [
         "접수일시",
@@ -2381,7 +2392,6 @@
       link.click();
     }
 
-    // 1) 선택 항목만 엑셀 다운로드
     function downloadSelectedQuotesCSV() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       const checkedBoxes = document.querySelectorAll('.quote-select-item:checked');
@@ -2397,7 +2407,6 @@
       exportToCSV(targetList, `늘온이엔지_선택견적접수내역_${new Date().toISOString().slice(0,10)}.csv`);
     }
 
-    // 2) 전체 내역 엑셀 다운로드
     function downloadAllQuotesCSV() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       if (quoteList.length === 0) {
@@ -2409,7 +2418,7 @@
     }
 
     // ----------------------------------------------------
-    // 6. 인증 및 회원 관리 로직
+    // 6. 회원 인증 및 마이페이지 로직
     // ----------------------------------------------------
     let isSignupPhoneVerified = false;
     let isEmailChecked = false;
@@ -2579,18 +2588,24 @@
           <a onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket" style="margin-right:3px;"></i> 로그아웃</a>
         `;
 
-        document.getElementById('c_company').value = currentUser.company || '';
-        document.getElementById('c_name').value = currentUser.name || '';
-        document.getElementById('c_tel').value = currentUser.phone || '';
+        const companyInput = document.getElementById('c_company');
+        const nameInput = document.getElementById('c_name');
+        const telInput = document.getElementById('c_tel');
+        if (companyInput) companyInput.value = currentUser.company || '';
+        if (nameInput) nameInput.value = currentUser.name || '';
+        if (telInput) telInput.value = currentUser.phone || '';
       } else {
         topAuthBar.innerHTML = `
           <a onclick="openAuthModal('login')"><i class="fa-solid fa-lock" style="font-size:0.75rem; margin-right:3px;"></i> 로그인</a>
           <span class="auth-divider"></span>
           <a onclick="openAuthModal('signup')"><i class="fa-solid fa-user-plus" style="font-size:0.75rem; margin-right:3px;"></i> 회원가입</a>
         `;
-        document.getElementById('c_company').value = '';
-        document.getElementById('c_name').value = '';
-        document.getElementById('c_tel').value = '';
+        const companyInput = document.getElementById('c_company');
+        const nameInput = document.getElementById('c_name');
+        const telInput = document.getElementById('c_tel');
+        if (companyInput) companyInput.value = '';
+        if (nameInput) nameInput.value = '';
+        if (telInput) telInput.value = '';
       }
     }
 
@@ -2710,8 +2725,8 @@
       const tabSignup = document.getElementById('tabSignup');
       const tabForgot = document.getElementById('tabForgot');
       const loginForm = document.getElementById('loginForm');
-      signupForm = document.getElementById('signupForm');
-      forgotForm = document.getElementById('forgotForm');
+      const signupForm = document.getElementById('signupForm');
+      const forgotForm = document.getElementById('forgotForm');
 
       tabLogin.classList.remove('active');
       tabSignup.classList.remove('active');
@@ -2738,7 +2753,7 @@
     }
 
     // ----------------------------------------------------
-    // 7. 온라인 견적 엑셀 계산 (침기계수 5.0 고정 & 추천 장비 매칭)
+    // 7. 온라인 견적 부하 계산 (0.18 kg/h 이하 1400CMH 반영)
     // ----------------------------------------------------
     function runExcelCalculation() {
       const sDoorW = parseFloat(document.getElementById('sDoorW').value) || 3.0;
@@ -2761,18 +2776,27 @@
       const W_base_kgh = (m * deltaX) / 1000;
       const W_final = W_base_kgh * infFactor;
 
+      const cap1400 = 0.18; // SRDU-140 (kg/h)
       const cap3000 = 0.40; // SRDU-300 (kg/h)
-      const only3000Count = Math.ceil(W_final / cap3000);
+
+      // 부하가 0.18 kg/h 이하일 경우 SRDU-140*1 추천
+      let recommendedEquip = "";
+      if (W_final <= cap1400) {
+        recommendedEquip = "SRDU-140*1";
+      } else {
+        const only3000Count = Math.ceil(W_final / cap3000);
+        recommendedEquip = `SRDU-300*${only3000Count}`;
+      }
 
       currentCalcData = {
         area: `${A.toFixed(2)} m²`,
         qEff: `${Q_effective.toFixed(1)} m³/h`,
         loadMoisture: W_final.toFixed(2),
-        recEquip: `SRDU-300*${only3000Count}`
+        recEquip: recommendedEquip
       };
 
       document.getElementById('bannerSubtitle').innerText = `총 수분 부하 ${W_final.toFixed(2)} kg/h 침기 완벽 대응 솔루션`;
-      document.getElementById('finalEquipRec').innerText = `SRDU-300*${only3000Count}`;
+      document.getElementById('finalEquipRec').innerText = recommendedEquip;
 
       const jw = (parseFloat(document.getElementById('jeonsilW').value) || 3.0) * 1000;
       const jl = (parseFloat(document.getElementById('jeonsilL').value) || 4.0) * 1000;
@@ -2813,7 +2837,18 @@
       }
     }
 
+    // ----------------------------------------------------
+    // 초기 로드 시 실행 (모달 닫힘 상태 확실히 초기화)
+    // ----------------------------------------------------
     window.onload = function() {
+      // 투명 레이어 차단 방지를 위해 강제 비활성화 확인
+      const authM = document.getElementById('authModal');
+      const postM = document.getElementById('postcodeModalWrap');
+      const mypM = document.getElementById('myPageModal');
+      if (authM) authM.classList.remove('active');
+      if (postM) postM.classList.remove('active');
+      if (mypM) mypM.classList.remove('active');
+
       checkLoginStatus();
       runExcelCalculation();
     };
