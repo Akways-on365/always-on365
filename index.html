@@ -4,13 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>늘온이엔지 | Always-on 365</title>
-  <!-- 프리텐다드 폰트 -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-  <!-- 폰트어썸 아이콘 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Daum 우편번호 API -->
+  <!-- 다음 우편번호 API -->
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
+  
   <style>
     :root {
       --primary-color: #0b2545;
@@ -39,10 +37,9 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      position: relative;
     }
 
-    /* ---------------- Header & Navigation ---------------- */
+    /* ---------------- Header & Nav ---------------- */
     header {
       position: fixed;
       top: 0;
@@ -51,8 +48,7 @@
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(10px);
       box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
-      z-index: 100;
-      pointer-events: auto;
+      z-index: 1000;
     }
 
     .header-inner {
@@ -112,7 +108,6 @@
       border-radius: 20px;
       font-weight: 800 !important;
       border: 1px solid #d8b4fe;
-      cursor: pointer;
     }
 
     .top-auth-bar .auth-divider {
@@ -170,13 +165,11 @@
     main {
       flex: 1;
       padding-top: 90px;
-      position: relative;
-      z-index: 1;
     }
 
     .page-view {
       display: none;
-      animation: fadeIn 0.25s ease-in-out;
+      animation: fadeIn 0.3s ease-in-out;
     }
 
     .page-view.active {
@@ -184,15 +177,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ---------------- Hero Section (메인) ---------------- */
+    /* ---------------- Hero Section ---------------- */
     .hero {
       height: 75vh;
       min-height: 480px;
-      background: linear-gradient(135deg, rgba(11, 37, 69, 0.92) 0%, rgba(0, 118, 214, 0.78) 100%),
+      background: linear-gradient(135deg, rgba(11, 37, 69, 0.9) 0%, rgba(0, 118, 214, 0.75) 100%),
                   url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
       display: flex;
       align-items: center;
@@ -249,18 +242,10 @@
       color: #fff;
     }
 
-    .btn-main-primary:hover {
-      background: #005fae;
-    }
-
     .btn-main-outline {
       border: 1px solid rgba(255,255,255,0.7);
       background: transparent;
       color: #fff;
-    }
-
-    .btn-main-outline:hover {
-      background: rgba(255,255,255,0.15);
     }
 
     section {
@@ -343,7 +328,7 @@
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
-    /* ---------------- 2. 제품소개 (SRDU-140 / SRDU-300 상세 제원) ---------------- */
+    /* ---------------- 2. 제품소개 ---------------- */
     .product-model-tabs {
       display: flex;
       justify-content: center;
@@ -698,6 +683,7 @@
       border-color: #cbd5e1;
     }
 
+    /* 프로젝트 메인 기본 정보 */
     .project-meta-box {
       background: #f8fafc;
       border: 1px solid var(--border-color);
@@ -732,56 +718,65 @@
       outline: none;
     }
 
+    /* 첨부 사진과 100% 동일한 결과 출력 카드 및 배너 */
     .dehum-calc-results {
       background: #ffffff;
-      border: 1px solid #bfdbfe;
+      border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 26px;
-      margin-bottom: 30px;
+      padding: 22px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
     }
 
     .rec-final-banner {
-      background: linear-gradient(135deg, #0b2545, #0076d6);
+      background: #0056b3;
+      background: linear-gradient(135deg, #093b74 0%, #0066cc 100%);
       color: #fff;
-      padding: 26px 30px;
+      padding: 28px 34px;
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .rec-final-banner h4 {
-      font-size: 1.45rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 4px;
+    .rec-final-banner .banner-left-text p {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      margin-bottom: 6px;
+      font-weight: 500;
     }
 
-    .rec-final-banner p {
-      font-size: 0.95rem;
-      opacity: 0.9;
+    .rec-final-banner .banner-left-text h4 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
     }
 
     .rec-final-tag {
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 14px 26px;
-      border-radius: 8px;
-      text-align: right;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 16px 28px;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 220px;
     }
 
     .rec-final-tag .tag-title {
       font-size: 0.85rem;
-      opacity: 0.88;
+      color: #e0f2fe;
+      margin-bottom: 6px;
+      font-weight: 600;
     }
 
     .rec-final-tag .tag-content {
-      font-size: 1.55rem;
+      font-size: 1.8rem;
       font-weight: 900;
       color: #ffe600;
+      letter-spacing: 0.5px;
     }
 
-    /* ---------------- 5. 관리자 전용 대시보드 뷰 ---------------- */
+    /* ---------------- 5. 관리자 전용 대시보드 뷰 스타일 ---------------- */
     .admin-dashboard-container {
       padding: 40px 0 80px;
     }
@@ -977,25 +972,25 @@
       font-size: 0.85rem;
     }
 
-    /* ---------------- 모달 창 (클릭 차단 방지 완전 격리) ---------------- */
+    /* ---------------- 모달 창 ---------------- */
     .auth-modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
       z-index: 2000;
-      display: none !important; /* 기본 차단 */
-      pointer-events: none !important; /* 클릭 투과 보장 */
+      display: none !important;
+      pointer-events: none !important;
       justify-content: center;
       align-items: center;
     }
 
     .auth-modal-overlay.active {
       display: flex !important;
-      pointer-events: auto !important; /* 열렸을 때만 인터랙션 허용 */
+      pointer-events: auto !important;
     }
 
     .auth-modal-box {
@@ -1004,7 +999,7 @@
       max-width: 500px;
       border-radius: 14px;
       padding: 34px 30px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
       position: relative;
       max-height: 90vh;
       overflow-y: auto;
@@ -1116,15 +1111,15 @@
       color: var(--point-color);
     }
 
-    /* ---------------- 다음 주소 레이어 모달 (클릭 차단 완전 방지) ---------------- */
+    /* ---------------- 다음 주소 레이어 모달 ---------------- */
     #postcodeModalWrap {
       display: none !important;
       pointer-events: none !important;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       background: rgba(0, 0, 0, 0.7);
       z-index: 3000;
       justify-content: center;
@@ -1251,8 +1246,8 @@
       .counter-bar { grid-template-columns: 1fr 1fr; }
       .portfolio-grid { grid-template-columns: 1fr 1fr; }
       .meta-grid { grid-template-columns: 1fr 1fr; }
-      .rec-final-banner { flex-direction: column; text-align: center; gap: 14px; }
-      .rec-final-tag { text-align: center; width: 100%; }
+      .rec-final-banner { flex-direction: column; text-align: center; gap: 18px; }
+      .rec-final-tag { width: 100%; }
       .footer-content { grid-template-columns: 1fr; }
       .prod-spec-table th { width: 35%; }
       .admin-stats-grid { grid-template-columns: 1fr; }
@@ -1361,7 +1356,7 @@
             <button class="model-tab-btn" id="tabBtn-300" onclick="switchProductModel('300')">SRDU-300</button>
           </div>
 
-          <!-- 1) SRDU-140 상세 -->
+          <!-- 1) SRDU-140 전용 상세 뷰 -->
           <div id="detail-SRDU-140" class="product-detail-view active">
             <div class="prod-feature-box">
               <h4>SRDU-140 (1,400 CMH 급 저온 제습 시스템)</h4>
@@ -1408,12 +1403,9 @@
                 </tr>
               </tbody>
             </table>
-            <p style="font-size: 0.85rem; color: #64748b; margin-top: 12px;">
-              ※ 외형 치수(CAD 도면) 및 팬 정압(mmAq) 튜닝 사양은 현장 조건에 따라 맞춤 설계 가능하며 상세 승인도는 견적 접수 후 제공됩니다.
-            </p>
           </div>
 
-          <!-- 2) SRDU-300 상세 -->
+          <!-- 2) SRDU-300 전용 상세 뷰 -->
           <div id="detail-SRDU-300" class="product-detail-view">
             <div class="prod-feature-box">
               <h4>SRDU-300 (3,000 CMH 급 대용량 제습 시스템)</h4>
@@ -1460,9 +1452,6 @@
                 </tr>
               </tbody>
             </table>
-            <p style="font-size: 0.85rem; color: #64748b; margin-top: 12px;">
-              ※ 외형 치수(CAD 도면) 및 팬 정압(mmAq) 튜닝 사양은 현장 조건에 따라 맞춤 설계 가능하며 상세 승인도는 견적 접수 후 제공됩니다.
-            </p>
           </div>
         </div>
       </section>
@@ -1525,7 +1514,7 @@
       </section>
     </div>
 
-    <!-- [VIEW 4] 온라인 견적 뷰 -->
+    <!-- [VIEW 4] 온라인 견적 뷰 (사진과 100% 동일하게 정리) -->
     <div id="view-estimate" class="page-view">
       <section id="estimate" class="bg-light">
         <div class="container">
@@ -1538,6 +1527,7 @@
           </div>
 
           <div class="quote-card">
+            <!-- 반응형 평면도 -->
             <div class="floorplan-stage">
               <div class="floorplan-wrapper" id="floorplanWrapper">
                 <div class="plan-room-jeonsil" id="jeonsilBox">
@@ -1571,7 +1561,7 @@
             </div>
 
             <form id="realQuoteForm" onsubmit="handleQuoteSubmit(event)">
-              <!-- 치수 입력 테이블 -->
+              <!-- 1. 치수 입력 테이블 (요청대로 '도어 가로 (m)', '도어 세로 (m)'로 변경) -->
               <div class="table-responsive">
                 <table class="spec-table">
                   <thead>
@@ -1589,21 +1579,21 @@
                   <tbody>
                     <tr>
                       <td class="col-name">인접실(전실)</td>
-                      <td><input type="number" id="jDoorW" step="0.1" class="spec-input" value="2.0" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="jDoorH" step="0.1" class="spec-input" value="2.5" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="jDoorW" step="0.1" min="0.1" max="3.0" class="spec-input" value="0.9" oninput="validateDoorInput(this); runExcelCalculation();"></td>
+                      <td><input type="number" id="jDoorH" step="0.1" min="0.1" max="3.0" class="spec-input" value="1.2" oninput="validateDoorInput(this); runExcelCalculation();"></td>
                       <td><input type="number" id="jDoorQty" class="spec-input" value="1" min="1" max="4" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="jeonsilW" step="0.1" class="spec-input" value="3.0" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="jeonsilL" step="0.1" class="spec-input" value="4.0" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="jeonsilW" step="0.1" class="spec-input" value="0.5" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="jeonsilL" step="0.1" class="spec-input" value="1.0" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="jTemp" class="spec-input spec-input-readonly" value="25" readonly></td>
                       <td><input type="number" id="jHum" class="spec-input spec-input-readonly" value="60" readonly></td>
                     </tr>
                     <tr>
                       <td class="col-name">냉동창고</td>
-                      <td><input type="number" id="sDoorW" step="0.1" class="spec-input" value="3.0" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="sDoorH" step="0.1" class="spec-input" value="3.0" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="sDoorW" step="0.1" min="0.1" max="3.0" class="spec-input" value="0.9" oninput="validateDoorInput(this); runExcelCalculation();"></td>
+                      <td><input type="number" id="sDoorH" step="0.1" min="0.1" max="3.0" class="spec-input" value="1.2" oninput="validateDoorInput(this); runExcelCalculation();"></td>
                       <td><input type="number" id="sDoorQty" class="spec-input" value="1" min="1" max="4" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="storageW" step="0.1" class="spec-input" value="7.0" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="storageL" step="0.1" class="spec-input" value="8.0" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="storageW" step="0.1" class="spec-input" value="1.0" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="storageL" step="0.1" class="spec-input" value="1.0" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="sTemp" class="spec-input" value="-20" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="sHum" class="spec-input spec-input-readonly" value="80" readonly></td>
                     </tr>
@@ -1611,7 +1601,7 @@
                 </table>
               </div>
 
-              <!-- 프로젝트 기본 정보 -->
+              <!-- 2. 프로젝트 기본 정보 -->
               <div class="project-meta-box">
                 <div class="meta-grid">
                   <div class="meta-item">
@@ -1633,16 +1623,16 @@
                 </div>
               </div>
 
-              <!-- 결과 출력 배너 -->
+              <!-- 3. 첨부 사진과 100% 동일한 결과 출력 카드 (다른 표/상세값 제외) -->
               <div class="dehum-calc-results">
                 <div class="rec-final-banner">
-                  <div>
+                  <div class="banner-left-text">
                     <p>늘온이엔지 최적 엔지니어링 추천</p>
-                    <h4 id="bannerSubtitle">침기 부하 완벽 대응 제습 솔루션</h4>
+                    <h4 id="bannerSubtitle">총 수분 부하 0.22 kg/h 침기 완벽 대응 솔루션</h4>
                   </div>
                   <div class="rec-final-tag">
                     <div class="tag-title">추천 장비 수량 (최소 장비수량 선택)</div>
-                    <div class="tag-content" id="finalEquipRec">SRDU-300*5</div>
+                    <div class="tag-content" id="finalEquipRec">SRDU-300*1</div>
                   </div>
                 </div>
               </div>
@@ -1695,7 +1685,6 @@
             <h2 class="section-title">늘온이엔지 통합 관리자 콘솔</h2>
           </div>
 
-          <!-- 통계 카드 -->
           <div class="admin-stats-grid">
             <div class="admin-stat-card">
               <div class="stat-title">총 접수된 견적 수</div>
@@ -1711,7 +1700,7 @@
             </div>
           </div>
 
-          <!-- 1. 견적 접수 이력 테이블 -->
+          <!-- 1. 견적 접수 이력 테이블 (선택 다운로드 지원) -->
           <div class="admin-table-box">
             <div class="box-header">
               <h3><i class="fa-solid fa-calculator" style="color: var(--point-color);"></i> 실시간 온라인 견적 접수 내역</h3>
@@ -1931,7 +1920,7 @@
     </div>
   </div>
 
-  <!-- 독립 Daum 주소 레이어 모달 -->
+  <!-- 독립 다음 주소 레이어 모달 -->
   <div id="postcodeModalWrap">
     <div class="postcode-content-box">
       <div class="postcode-header-bar">
@@ -2008,9 +1997,6 @@
   </div>
 
   <script>
-    // ----------------------------------------------------
-    // 관리자 계정 목록
-    // ----------------------------------------------------
     const ADMIN_EMAILS = [
       "mjeong228@naver.com",
       "admin@alwayson365.co.kr"
@@ -2020,9 +2006,15 @@
       return user && ADMIN_EMAILS.includes(user.email);
     }
 
-    // ----------------------------------------------------
-    // 1. 단일 페이지(SPA) 화면 전환
-    // ----------------------------------------------------
+    // 도어 최대 3.0m 제한 검증 함수
+    function validateDoorInput(input) {
+      let val = parseFloat(input.value);
+      if (val > 3.0) {
+        input.value = 3.0;
+      }
+    }
+
+    // 1. 페이지 전환 (SPA)
     function navigateToPage(pageKey) {
       if (pageKey === 'estimate') {
         const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
@@ -2066,9 +2058,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // 2. 제품소개 모델 탭 전환
-    // ----------------------------------------------------
+    // 2. 제품 모델 전환 (SRDU-140 / SRDU-300)
     function switchProductModel(model) {
       document.getElementById('tabBtn-140').classList.remove('active');
       document.getElementById('tabBtn-300').classList.remove('active');
@@ -2084,9 +2074,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // 3. 도로명 주소 검색 (Daum Postcode)
-    // ----------------------------------------------------
+    // 3. 도로명 주소 모달
     function openDaumPostcodeModal() {
       const wrap = document.getElementById('postcodeModalWrap');
       const container = document.getElementById('postcodeFrameContainer');
@@ -2130,9 +2118,7 @@
       document.getElementById('postcodeFrameContainer').innerHTML = '';
     }
 
-    // ----------------------------------------------------
-    // 4. 견적서 접수 및 전송
-    // ----------------------------------------------------
+    // 4. 견적서 접수 및 이메일 연동
     let currentCalcData = {};
 
     function handleQuoteSubmit(e) {
@@ -2178,7 +2164,7 @@
         tel: document.getElementById('c_tel').value,
         email: currentUser.email || '미입력',
         bizNo: currentUser.bizNo || '미입력',
-        address: `${currentUser.address || ''} ${currentUser.addressDetail || ''}`.trim() || '미입력',
+        address: `${currentUser.address \vert{}\vert{} ''}${currentUser.addressDetail || ''}`.trim() || '미입력',
         
         jeonsilDim: `${jeonsilW}m × ${jeonsilL}m`,
         jeonsilDoor: `${jDoorW}m × ${jDoorH}m (${jDoorQty}대)`,
@@ -2189,7 +2175,7 @@
         storageAir: `${sTemp}℃ / ${sHum}%`,
         sTemp: `${sTemp} ℃`,
 
-        infFactor: "5.0",
+        infFactor: "2.0",
         area: currentCalcData.area || (parseFloat(sDoorW) * parseFloat(sDoorH)).toFixed(2) + " m²",
         qEff: currentCalcData.qEff || ((parseFloat(sDoorW) * parseFloat(sDoorH)) * 0.1 * 3600 * (30 / 3600)).toFixed(1) + " m³/h",
         loadMoisture: `${currentCalcData.loadMoisture} kg/h`,
@@ -2202,7 +2188,7 @@
       localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
 
       const payload = {
-        _subject: `[늘온이엔지 견적접수] ${quoteRecord.company} - ${quoteRecord.project}`,
+        _subject: `[늘온이엔지 견적접수] ${quoteRecord.company} -${quoteRecord.project}`,
         접수일시: quoteRecord.date,
         회사명: quoteRecord.company,
         프로젝트명: quoteRecord.project,
@@ -2245,9 +2231,7 @@
       });
     }
 
-    // ----------------------------------------------------
-    // 5. 관리자 콘솔 대시보드 및 CSV 다운로드
-    // ----------------------------------------------------
+    // 5. 관리자 콘솔
     function renderAdminDashboard() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       const userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
@@ -2292,7 +2276,7 @@
           <tr>
             <td><strong>${u.company}</strong></td>
             <td>${u.bizNo || '-'}</td>
-            <td style="text-align:left; font-size:0.82rem;">${u.address || '-'} ${u.addressDetail || ''}</td>
+            <td style="text-align:left; font-size:0.82rem;">${u.address \vert{}\vert{} '-'}${u.addressDetail || ''}</td>
             <td>${u.name || '-'}</td>
             <td>${u.phone || '-'}</td>
             <td>${u.email}</td>
@@ -2333,54 +2317,21 @@
 
     function exportToCSV(dataArray, filename) {
       const headers = [
-        "접수일시",
-        "회사명",
-        "프로젝트명",
-        "담당자",
-        "연락처",
-        "이메일",
-        "사업자등록번호",
-        "회사주소",
-        "전실 크기",
-        "전실 도어(규격/수량)",
-        "인접실 온습도",
-        "냉동창고 크기",
-        "냉동창고 도어(규격/수량)",
-        "냉동창고 온습도",
-        "적용 침기계수",
-        "개구부면적",
-        "침투유효풍량",
-        "계산 수분침투부하",
-        "최종추천장비",
-        "처리상태"
+        "접수일시", "회사명", "프로젝트명", "담당자", "연락처", "이메일", "사업자등록번호",
+        "회사주소", "전실 크기", "전실 도어(규격/수량)", "인접실 온습도", "냉동창고 크기",
+        "냉동창고 도어(규격/수량)", "냉동창고 온습도", "적용 침기계수", "개구부면적",
+        "침투유효풍량", "계산 수분침투부하", "최종추천장비", "처리상태"
       ];
 
       let csv = "\uFEFF" + headers.join(",") + "\n";
 
       dataArray.forEach(q => {
         const row = [
-          q.date || '',
-          q.company || '',
-          q.project || '',
-          q.name || '',
-          q.tel || '',
-          q.email || '',
-          q.bizNo || '',
-          q.address || '',
-          q.jeonsilDim || '-',
-          q.jeonsilDoor || '-',
-          q.jeonsilAir || '25℃/60%',
-          q.storageDim || '-',
-          q.storageDoor || '-',
-          q.storageAir || (q.sTemp ? `${q.sTemp}/80%` : '-'),
-          q.infFactor || '5.0',
-          q.area || '-',
-          q.qEff || '-',
-          q.loadMoisture || '',
-          q.recEquip || '',
-          q.status || '접수완료'
+          q.date || '', q.company || '', q.project || '', q.name || '', q.tel || '', q.email || '',
+          q.bizNo || '', q.address || '', q.jeonsilDim || '-', q.jeonsilDoor || '-', q.jeonsilAir || '25℃/60%',
+          q.storageDim || '-', q.storageDoor || '-', q.storageAir || (q.sTemp ? `${q.sTemp}/80%` : '-'),
+          q.infFactor || '2.0', q.area || '-', q.qEff || '-', q.loadMoisture || '', q.recEquip || '', q.status || '접수완료'
         ];
-
         const formattedRow = row.map(val => `"${String(val).replace(/"/g, '""')}"`);
         csv += formattedRow.join(",") + "\n";
       });
@@ -2417,9 +2368,7 @@
       exportToCSV(quoteList, `늘온이엔지_전체견적접수내역_${new Date().toISOString().slice(0,10)}.csv`);
     }
 
-    // ----------------------------------------------------
-    // 6. 회원 인증 및 마이페이지 로직
-    // ----------------------------------------------------
+    // 6. 회원 관리 & 인증
     let isSignupPhoneVerified = false;
     let isEmailChecked = false;
     const DEMO_AUTH_CODE = "1234";
@@ -2588,24 +2537,18 @@
           <a onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket" style="margin-right:3px;"></i> 로그아웃</a>
         `;
 
-        const companyInput = document.getElementById('c_company');
-        const nameInput = document.getElementById('c_name');
-        const telInput = document.getElementById('c_tel');
-        if (companyInput) companyInput.value = currentUser.company || '';
-        if (nameInput) nameInput.value = currentUser.name || '';
-        if (telInput) telInput.value = currentUser.phone || '';
+        document.getElementById('c_company').value = currentUser.company || '';
+        document.getElementById('c_name').value = currentUser.name || '';
+        document.getElementById('c_tel').value = currentUser.phone || '';
       } else {
         topAuthBar.innerHTML = `
           <a onclick="openAuthModal('login')"><i class="fa-solid fa-lock" style="font-size:0.75rem; margin-right:3px;"></i> 로그인</a>
           <span class="auth-divider"></span>
           <a onclick="openAuthModal('signup')"><i class="fa-solid fa-user-plus" style="font-size:0.75rem; margin-right:3px;"></i> 회원가입</a>
         `;
-        const companyInput = document.getElementById('c_company');
-        const nameInput = document.getElementById('c_name');
-        const telInput = document.getElementById('c_tel');
-        if (companyInput) companyInput.value = '';
-        if (nameInput) nameInput.value = '';
-        if (telInput) telInput.value = '';
+        document.getElementById('c_company').value = '';
+        document.getElementById('c_name').value = '';
+        document.getElementById('c_tel').value = '';
       }
     }
 
@@ -2752,26 +2695,27 @@
       }
     }
 
-    // ----------------------------------------------------
-    // 7. 온라인 견적 부하 계산 (0.18 kg/h 이하 1400CMH 반영)
-    // ----------------------------------------------------
+    // 7. 견적 계산 로직 (침기계수 2.0 고정 & 도어 최대 3.0m 제한 & 최적 추천)
     function runExcelCalculation() {
-      const sDoorW = parseFloat(document.getElementById('sDoorW').value) || 3.0;
-      const sDoorH = parseFloat(document.getElementById('sDoorH').value) || 3.0;
+      const sDoorW = Math.min(parseFloat(document.getElementById('sDoorW').value) || 0.9, 3.0);
+      const sDoorH = Math.min(parseFloat(document.getElementById('sDoorH').value) || 1.2, 3.0);
       const sDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('sDoorQty').value) || 1, 4));
       const jDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('jDoorQty').value) || 1, 4));
 
+      // 고정 파라미터 (침기계수 2.0 고정)
       const openTime = 30; // 초
       const V = 0.1; // m/s
-      const infFactor = 5.0; // 침기계수 5.0 고정
+      const infFactor = 2.0; // 침기계수 2.0 고정
       const rho = 1.184; // 공기밀도
 
+      // 개구부 면적 및 유효 풍량
       const A = sDoorW * sDoorH;
       const Q_base = A * V * 3600;
       const Q_effective = Q_base * (openTime / 3600);
 
       const m = Q_effective * rho;
 
+      // 절대습도차 (11.9 - 0.62 = 11.28 g/kg)
       const deltaX = 11.9 - 0.62;
       const W_base_kgh = (m * deltaX) / 1000;
       const W_final = W_base_kgh * infFactor;
@@ -2779,7 +2723,7 @@
       const cap1400 = 0.18; // SRDU-140 (kg/h)
       const cap3000 = 0.40; // SRDU-300 (kg/h)
 
-      // 부하가 0.18 kg/h 이하일 경우 SRDU-140*1 추천
+      // 부하 기준 장비 추천
       let recommendedEquip = "";
       if (W_final <= cap1400) {
         recommendedEquip = "SRDU-140*1";
@@ -2795,13 +2739,15 @@
         recEquip: recommendedEquip
       };
 
+      // 사진과 동일한 배너 텍스트 업데이트
       document.getElementById('bannerSubtitle').innerText = `총 수분 부하 ${W_final.toFixed(2)} kg/h 침기 완벽 대응 솔루션`;
       document.getElementById('finalEquipRec').innerText = recommendedEquip;
 
-      const jw = (parseFloat(document.getElementById('jeonsilW').value) || 3.0) * 1000;
-      const jl = (parseFloat(document.getElementById('jeonsilL').value) || 4.0) * 1000;
-      const sw = (parseFloat(document.getElementById('storageW').value) || 7.0) * 1000;
-      const sl = (parseFloat(document.getElementById('storageL').value) || 8.0) * 1000;
+      // 도면 동적 렌더링
+      const jw = (parseFloat(document.getElementById('jeonsilW').value) || 0.5) * 1000;
+      const jl = (parseFloat(document.getElementById('jeonsilL').value) || 1.0) * 1000;
+      const sw = (parseFloat(document.getElementById('storageW').value) || 1.0) * 1000;
+      const sl = (parseFloat(document.getElementById('storageL').value) || 1.0) * 1000;
 
       const jeonsilBox = document.getElementById('jeonsilBox');
       const storageBox = document.getElementById('storageBox');
@@ -2837,18 +2783,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // 초기 로드 시 실행 (모달 닫힘 상태 확실히 초기화)
-    // ----------------------------------------------------
     window.onload = function() {
-      // 투명 레이어 차단 방지를 위해 강제 비활성화 확인
-      const authM = document.getElementById('authModal');
-      const postM = document.getElementById('postcodeModalWrap');
-      const mypM = document.getElementById('myPageModal');
-      if (authM) authM.classList.remove('active');
-      if (postM) postM.classList.remove('active');
-      if (mypM) mypM.classList.remove('active');
-
       checkLoginStatus();
       runExcelCalculation();
     };
