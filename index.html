@@ -343,7 +343,7 @@
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
-    /* ---------------- 2. 제품소개 (SRDU-140 / SRDU-300 상세 제원) ---------------- */
+    /* ---------------- 2. 제품소개 ---------------- */
     .product-model-tabs {
       display: flex;
       justify-content: center;
@@ -767,16 +767,14 @@
       border: 1px solid rgba(255,255,255,0.3);
       padding: 14px 26px;
       border-radius: 8px;
-      text-align: right;
-    }
-
-    .rec-final-tag .tag-title {
-      font-size: 0.85rem;
-      opacity: 0.88;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .rec-final-tag .tag-content {
-      font-size: 1.55rem;
+      font-size: 1.75rem;
       font-weight: 900;
       color: #ffe600;
     }
@@ -977,7 +975,7 @@
       font-size: 0.85rem;
     }
 
-    /* ---------------- 모달 창 (클릭 차단 방지 완전 격리) ---------------- */
+    /* ---------------- 모달 창 ---------------- */
     .auth-modal-overlay {
       position: fixed;
       top: 0;
@@ -987,15 +985,15 @@
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
       z-index: 2000;
-      display: none !important; /* 기본 차단 */
-      pointer-events: none !important; /* 클릭 투과 보장 */
+      display: none !important;
+      pointer-events: none !important;
       justify-content: center;
       align-items: center;
     }
 
     .auth-modal-overlay.active {
       display: flex !important;
-      pointer-events: auto !important; /* 열렸을 때만 인터랙션 허용 */
+      pointer-events: auto !important;
     }
 
     .auth-modal-box {
@@ -1116,7 +1114,7 @@
       color: var(--point-color);
     }
 
-    /* ---------------- 다음 주소 레이어 모달 (클릭 차단 완전 방지) ---------------- */
+    /* ---------------- 다음 주소 레이어 모달 ---------------- */
     #postcodeModalWrap {
       display: none !important;
       pointer-events: none !important;
@@ -1571,7 +1569,7 @@
             </div>
 
             <form id="realQuoteForm" onsubmit="handleQuoteSubmit(event)">
-              <!-- 치수 입력 테이블 -->
+              <!-- 치수 입력 테이블 (요청대로 '도어 가로 (m)', '도어 세로 (m)' 표기) -->
               <div class="table-responsive">
                 <table class="spec-table">
                   <thead>
@@ -1589,8 +1587,8 @@
                   <tbody>
                     <tr>
                       <td class="col-name">인접실(전실)</td>
-                      <td><input type="number" id="jDoorW" step="0.1" class="spec-input" value="2.0" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="jDoorH" step="0.1" class="spec-input" value="2.5" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="jDoorW" step="0.1" class="spec-input" value="0.9" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="jDoorH" step="0.1" class="spec-input" value="1.2" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="jDoorQty" class="spec-input" value="1" min="1" max="4" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="jeonsilW" step="0.1" class="spec-input" value="3.0" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="jeonsilL" step="0.1" class="spec-input" value="4.0" oninput="runExcelCalculation()"></td>
@@ -1599,8 +1597,8 @@
                     </tr>
                     <tr>
                       <td class="col-name">냉동창고</td>
-                      <td><input type="number" id="sDoorW" step="0.1" class="spec-input" value="3.0" oninput="runExcelCalculation()"></td>
-                      <td><input type="number" id="sDoorH" step="0.1" class="spec-input" value="3.0" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="sDoorW" step="0.1" class="spec-input" value="0.9" oninput="runExcelCalculation()"></td>
+                      <td><input type="number" id="sDoorH" step="0.1" class="spec-input" value="1.2" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="sDoorQty" class="spec-input" value="1" min="1" max="4" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="storageW" step="0.1" class="spec-input" value="7.0" oninput="runExcelCalculation()"></td>
                       <td><input type="number" id="storageL" step="0.1" class="spec-input" value="8.0" oninput="runExcelCalculation()"></td>
@@ -1633,7 +1631,7 @@
                 </div>
               </div>
 
-              <!-- 결과 출력 배너 -->
+              <!-- 결과 출력 배너 (안내 문구 삭제 및 SRDU-140*1 반영) -->
               <div class="dehum-calc-results">
                 <div class="rec-final-banner">
                   <div>
@@ -1641,8 +1639,7 @@
                     <h4 id="bannerSubtitle">침기 부하 완벽 대응 제습 솔루션</h4>
                   </div>
                   <div class="rec-final-tag">
-                    <div class="tag-title">추천 장비 수량 (최소 장비수량 선택)</div>
-                    <div class="tag-content" id="finalEquipRec">SRDU-300*5</div>
+                    <div class="tag-content" id="finalEquipRec">SRDU-140*1</div>
                   </div>
                 </div>
               </div>
@@ -2178,7 +2175,7 @@
         tel: document.getElementById('c_tel').value,
         email: currentUser.email || '미입력',
         bizNo: currentUser.bizNo || '미입력',
-        address: `${currentUser.address || ''} ${currentUser.addressDetail || ''}`.trim() || '미입력',
+        address: `${currentUser.address \vert{}\vert{} ''}${currentUser.addressDetail || ''}`.trim() || '미입력',
         
         jeonsilDim: `${jeonsilW}m × ${jeonsilL}m`,
         jeonsilDoor: `${jDoorW}m × ${jDoorH}m (${jDoorQty}대)`,
@@ -2189,7 +2186,7 @@
         storageAir: `${sTemp}℃ / ${sHum}%`,
         sTemp: `${sTemp} ℃`,
 
-        infFactor: "5.0",
+        infFactor: "2.0",
         area: currentCalcData.area || (parseFloat(sDoorW) * parseFloat(sDoorH)).toFixed(2) + " m²",
         qEff: currentCalcData.qEff || ((parseFloat(sDoorW) * parseFloat(sDoorH)) * 0.1 * 3600 * (30 / 3600)).toFixed(1) + " m³/h",
         loadMoisture: `${currentCalcData.loadMoisture} kg/h`,
@@ -2202,7 +2199,7 @@
       localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
 
       const payload = {
-        _subject: `[늘온이엔지 견적접수] ${quoteRecord.company} - ${quoteRecord.project}`,
+        _subject: `[늘온이엔지 견적접수] ${quoteRecord.company} -${quoteRecord.project}`,
         접수일시: quoteRecord.date,
         회사명: quoteRecord.company,
         프로젝트명: quoteRecord.project,
@@ -2292,7 +2289,7 @@
           <tr>
             <td><strong>${u.company}</strong></td>
             <td>${u.bizNo || '-'}</td>
-            <td style="text-align:left; font-size:0.82rem;">${u.address || '-'} ${u.addressDetail || ''}</td>
+            <td style="text-align:left; font-size:0.82rem;">${u.address \vert{}\vert{} '-'}${u.addressDetail || ''}</td>
             <td>${u.name || '-'}</td>
             <td>${u.phone || '-'}</td>
             <td>${u.email}</td>
@@ -2373,7 +2370,7 @@
           q.storageDim || '-',
           q.storageDoor || '-',
           q.storageAir || (q.sTemp ? `${q.sTemp}/80%` : '-'),
-          q.infFactor || '5.0',
+          q.infFactor || '2.0',
           q.area || '-',
           q.qEff || '-',
           q.loadMoisture || '',
@@ -2753,20 +2750,20 @@
     }
 
     // ----------------------------------------------------
-    // 7. 온라인 견적 부하 계산 (0.18 kg/h 이하 1400CMH 반영)
+    // 7. 온라인 견적 부하 계산 (침기계수 2.0 고정 & 0.18 kg/h 이하 SRDU-140*1 반영)
     // ----------------------------------------------------
     function runExcelCalculation() {
-      const sDoorW = parseFloat(document.getElementById('sDoorW').value) || 3.0;
-      const sDoorH = parseFloat(document.getElementById('sDoorH').value) || 3.0;
+      const sDoorW = parseFloat(document.getElementById('sDoorW').value) || 0.9;
+      const sDoorH = parseFloat(document.getElementById('sDoorH').value) || 1.2;
       const sDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('sDoorQty').value) || 1, 4));
       const jDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('jDoorQty').value) || 1, 4));
 
       const openTime = 30; // 초
       const V = 0.1; // m/s
-      const infFactor = 5.0; // 침기계수 5.0 고정
+      const infFactor = 2.0; // 침기계수 2.0 고정 반영
       const rho = 1.184; // 공기밀도
 
-      const A = sDoorW * sDoorH;
+      const A = sDoorW * sDoorH * sDoorQty;
       const Q_base = A * V * 3600;
       const Q_effective = Q_base * (openTime / 3600);
 
