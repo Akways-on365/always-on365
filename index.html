@@ -6,8 +6,6 @@
   <title>늘온이엔지 | Always-on 365</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- 다음 우편번호 API -->
-  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
   <style>
     :root {
@@ -1005,7 +1003,7 @@
     }
 
     .auth-modal-overlay.active {
-      display: flex;
+      display: flex !important;
     }
 
     .auth-modal-box {
@@ -1141,7 +1139,7 @@
     }
 
     #postcodeModalWrap.active {
-      display: flex;
+      display: flex !important;
     }
 
     .postcode-content-box {
@@ -1633,7 +1631,7 @@
                 </div>
               </div>
 
-              <!-- 결과 출력 배너 (0.09 kg/h -> SRDU-140*1 자동 반영) -->
+              <!-- 결과 출력 배너 -->
               <div class="dehum-calc-results">
                 <div class="rec-final-banner">
                   <div class="banner-left-text">
@@ -2000,7 +1998,19 @@
     </div>
   </div>
 
+  <!-- 비동기 안전 로드 스크립트 -->
   <script>
+    // 다음 우편번호 스크립트 비동기 동적 주입 (페이지 블로킹 원천 차단)
+    function loadDaumPostcodeScript() {
+      if (!document.getElementById('daumPostcodeScript')) {
+        const script = document.createElement('script');
+        script.id = 'daumPostcodeScript';
+        script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+        script.async = true;
+        document.head.appendChild(script);
+      }
+    }
+
     const ADMIN_EMAILS = [
       "mjeong228@naver.com",
       "admin@alwayson365.co.kr"
@@ -2018,7 +2028,7 @@
     }
 
     // 1. 페이지 전환 (SPA)
-    function navigateToPage(pageKey) {
+    window.navigateToPage = function(pageKey) {
       if (pageKey === 'estimate') {
         const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
         if (!currentUser) {
@@ -2059,10 +2069,10 @@
       if (pageKey === 'estimate') {
         runExcelCalculation();
       }
-    }
+    };
 
     // 2. 모델 탭 전환
-    function switchProductModel(model) {
+    window.switchProductModel = function(model) {
       document.getElementById('tabBtn-140').classList.remove('active');
       document.getElementById('tabBtn-300').classList.remove('active');
       document.getElementById('detail-SRDU-140').classList.remove('active');
@@ -2075,10 +2085,15 @@
         document.getElementById('tabBtn-300').classList.add('active');
         document.getElementById('detail-SRDU-300').classList.add('active');
       }
-    }
+    };
 
     // 3. 도로명 주소 모달
-    function openDaumPostcodeModal() {
+    window.openDaumPostcodeModal = function() {
+      if (typeof daum === 'undefined' || !daum.Postcode) {
+        loadDaumPostcodeScript();
+        setTimeout(window.openDaumPostcodeModal, 300);
+        return;
+      }
       const wrap = document.getElementById('postcodeModalWrap');
       const container = document.getElementById('postcodeFrameContainer');
       container.innerHTML = '';
@@ -2113,18 +2128,18 @@
       }).embed(container);
 
       wrap.classList.add('active');
-    }
+    };
 
-    function closeDaumPostcodeModal() {
+    window.closeDaumPostcodeModal = function() {
       const wrap = document.getElementById('postcodeModalWrap');
       wrap.classList.remove('active');
       document.getElementById('postcodeFrameContainer').innerHTML = '';
-    }
+    };
 
     // 4. 견적서 접수 및 메일 전송
     let currentCalcData = {};
 
-    function handleQuoteSubmit(e) {
+    window.handleQuoteSubmit = function(e) {
       e.preventDefault();
       const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       if (!currentUser) {
@@ -2232,10 +2247,10 @@
         btn.disabled = false;
         alert('설계 데이터 기반 견적 신청이 완료되었습니다.\n담당자가 검토 후 상세 견적서를 발송해 드립니다.');
       });
-    }
+    };
 
     // 5. 관리자 콘솔
-    function renderAdminDashboard() {
+    window.renderAdminDashboard = function() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       const userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
 
@@ -2289,23 +2304,23 @@
           </tr>
         `).join('');
       }
-    }
+    };
 
-    function toggleSelectAllQuotes(masterCheck) {
+    window.toggleSelectAllQuotes = function(masterCheck) {
       const checkboxes = document.querySelectorAll('.quote-select-item');
       checkboxes.forEach(cb => cb.checked = masterCheck.checked);
-    }
+    };
 
-    function changeQuoteStatus(id, newStatus) {
+    window.changeQuoteStatus = function(id, newStatus) {
       let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       const item = quoteList.find(q => q.id === id);
       if (item) {
         item.status = newStatus;
         localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
       }
-    }
+    };
 
-    function adminDeleteUser(email) {
+    window.adminDeleteUser = function(email) {
       if (ADMIN_EMAILS.includes(email)) {
         alert('최고 관리자 계정은 삭제할 수 없습니다.');
         return;
@@ -2316,9 +2331,9 @@
         localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
         renderAdminDashboard();
       }
-    }
+    };
 
-    function exportToCSV(dataArray, filename) {
+    window.exportToCSV = function(dataArray, filename) {
       const headers = [
         "접수일시", "회사명", "프로젝트명", "담당자", "연락처", "이메일", "사업자등록번호",
         "회사주소", "전실 크기", "전실 도어(규격/수량)", "인접실 온습도", "냉동창고 크기",
@@ -2344,9 +2359,9 @@
       link.href = URL.createObjectURL(blob);
       link.download = filename;
       link.click();
-    }
+    };
 
-    function downloadSelectedQuotesCSV() {
+    window.downloadSelectedQuotesCSV = function() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       const checkedBoxes = document.querySelectorAll('.quote-select-item:checked');
 
@@ -2359,9 +2374,9 @@
       const targetList = quoteList.filter(q => selectedIds.includes(q.id));
 
       exportToCSV(targetList, `늘온이엔지_선택견적접수내역_${new Date().toISOString().slice(0,10)}.csv`);
-    }
+    };
 
-    function downloadAllQuotesCSV() {
+    window.downloadAllQuotesCSV = function() {
       const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       if (quoteList.length === 0) {
         alert('다운로드할 견적 내역이 없습니다.');
@@ -2369,14 +2384,14 @@
       }
 
       exportToCSV(quoteList, `늘온이엔지_전체견적접수내역_${new Date().toISOString().slice(0,10)}.csv`);
-    }
+    };
 
     // 6. 회원 관리 & 인증
     let isSignupPhoneVerified = false;
     let isEmailChecked = false;
     const DEMO_AUTH_CODE = "1234";
 
-    function checkEmailDuplicate() {
+    window.checkEmailDuplicate = function() {
       const email = document.getElementById('regEmail').value;
       if (!email || !email.includes('@')) {
         alert('올바른 이메일 주소를 입력해주세요.');
@@ -2393,9 +2408,9 @@
         alert('사용 가능한 이메일입니다.');
         isEmailChecked = true;
       }
-    }
+    };
 
-    function sendSmsCode(type) {
+    window.sendSmsCode = function(type) {
       let phoneVal = '';
       if (type === 'signup') phoneVal = document.getElementById('regPhone').value;
       else if (type === 'reset') phoneVal = document.getElementById('resetPhone').value;
@@ -2411,9 +2426,9 @@
       if (type === 'signup') document.getElementById('signupCodeGroup').style.display = 'block';
       else if (type === 'reset') document.getElementById('resetCodeGroup').style.display = 'block';
       else if (type === 'mpPhone') document.getElementById('mpPhoneCodeGroup').style.display = 'block';
-    }
+    };
 
-    function verifySmsCode(type) {
+    window.verifySmsCode = function(type) {
       let codeVal = '';
       if (type === 'signup') codeVal = document.getElementById('signupAuthCode').value;
       else if (type === 'reset') codeVal = document.getElementById('resetAuthCode').value;
@@ -2437,9 +2452,9 @@
       } else {
         alert('인증번호가 일치하지 않습니다. 다시 확인해주세요.');
       }
-    }
+    };
 
-    function handleSignup(e) {
+    window.handleSignup = function(e) {
       e.preventDefault();
       if (!isEmailChecked) {
         alert('이메일 중복 확인을 진행해주세요.');
@@ -2469,9 +2484,9 @@
       alert('회원가입이 완료되었습니다! 로그인해 주세요.');
       switchAuthTab('login');
       document.getElementById('loginEmail').value = newUser.email;
-    }
+    };
 
-    function handleLogin(e) {
+    window.handleLogin = function(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value;
       const pw = document.getElementById('loginPw').value;
@@ -2515,16 +2530,16 @@
       } else {
         alert('아이디(이메일) 또는 비밀번호가 일치하지 않습니다.');
       }
-    }
+    };
 
-    function handleLogout() {
+    window.handleLogout = function() {
       localStorage.removeItem('alwayson_current_user');
       alert('로그아웃되었습니다.');
       checkLoginStatus();
       navigateToPage('home');
-    }
+    };
 
-    function checkLoginStatus() {
+    window.checkLoginStatus = function() {
       const topAuthBar = document.getElementById('topAuthBar');
       const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
 
@@ -2553,9 +2568,9 @@
         document.getElementById('c_name').value = '';
         document.getElementById('c_tel').value = '';
       }
-    }
+    };
 
-    function updateCompanyInfo() {
+    window.updateCompanyInfo = function() {
       const newCompany = document.getElementById('mpEditCompany').value;
       const newBizNo = document.getElementById('mpEditBizNo').value;
       const newName = document.getElementById('mpEditName').value;
@@ -2575,9 +2590,9 @@
       syncUserStorage(currentUser);
       alert('기업 정보가 성공적으로 변경되었습니다.');
       checkLoginStatus();
-    }
+    };
 
-    function updatePassword() {
+    window.updatePassword = function() {
       const curPw = document.getElementById('mpCurrentPw').value;
       const newPw = document.getElementById('mpNewPw').value;
 
@@ -2597,16 +2612,16 @@
       alert('비밀번호가 성공적으로 변경되었습니다.');
       document.getElementById('mpCurrentPw').value = '';
       document.getElementById('mpNewPw').value = '';
-    }
+    };
 
-    function updateUserField(field, value) {
+    window.updateUserField = function(field, value) {
       let currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       currentUser[field] = value;
       syncUserStorage(currentUser);
       checkLoginStatus();
-    }
+    };
 
-    function syncUserStorage(updatedUser) {
+    window.syncUserStorage = function(updatedUser) {
       localStorage.setItem('alwayson_current_user', JSON.stringify(updatedUser));
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       const idx = userList.findIndex(u => u.email === updatedUser.email);
@@ -2614,9 +2629,9 @@
         userList[idx] = updatedUser;
         localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
       }
-    }
+    };
 
-    function handlePasswordReset(e) {
+    window.handlePasswordReset = function(e) {
       e.preventDefault();
       const newPw = document.getElementById('newPw').value;
       const newPwConfirm = document.getElementById('newPwConfirm').value;
@@ -2637,21 +2652,21 @@
       } else {
         alert('해당 이메일의 회원 정보를 찾을 수 없습니다.');
       }
-    }
+    };
 
-    function openAuthModal(type) {
+    window.openAuthModal = function(type) {
       const modal = document.getElementById('authModal');
       modal.classList.add('active');
       switchAuthTab(type);
-    }
+    };
 
-    function closeAuthModal() {
+    window.closeAuthModal = function() {
       const modal = document.getElementById('authModal');
       modal.classList.remove('active');
       closeDaumPostcodeModal();
-    }
+    };
 
-    function openMyPageModal() {
+    window.openMyPageModal = function() {
       const user = JSON.parse(localStorage.getItem('alwayson_current_user'));
       if (user) {
         document.getElementById('mpEditCompany').value = user.company || '';
@@ -2661,13 +2676,13 @@
         document.getElementById('mpEditName').value = user.name || '';
         document.getElementById('myPageModal').classList.add('active');
       }
-    }
+    };
 
-    function closeMyPageModal() {
+    window.closeMyPageModal = function() {
       document.getElementById('myPageModal').classList.remove('active');
-    }
+    };
 
-    function switchAuthTab(type) {
+    window.switchAuthTab = function(type) {
       closeDaumPostcodeModal();
       const tabLogin = document.getElementById('tabLogin');
       const tabSignup = document.getElementById('tabSignup');
@@ -2698,10 +2713,10 @@
         document.getElementById('pwFindStep1').style.display = 'block';
         document.getElementById('pwFindStep2').style.display = 'none';
       }
-    }
+    };
 
-    // 7. 정밀 견적 계산 로직
-    function runExcelCalculation() {
+    // 7. 정밀 견적 계산 로직 (침기계수 2.0 고정 & SRDU-140*1 정확 분기)
+    window.runExcelCalculation = function() {
       const sDoorW = Math.min(parseFloat(document.getElementById('sDoorW').value) || 0.9, 3.0);
       const sDoorH = Math.min(parseFloat(document.getElementById('sDoorH').value) || 1.2, 3.0);
       const sDoorQty = Math.max(1, Math.min(parseInt(document.getElementById('sDoorQty').value) || 1, 4));
@@ -2781,12 +2796,13 @@
         d.style.height = dHeight + 'px';
         doorZoneCenter.appendChild(d);
       }
-    }
+    };
 
-    window.onload = function() {
+    // DOM이 준비되자마자 즉시 실행 (안전 바인딩)
+    document.addEventListener('DOMContentLoaded', function() {
       checkLoginStatus();
       runExcelCalculation();
-    };
+    });
   </script>
 </body>
 </html>
