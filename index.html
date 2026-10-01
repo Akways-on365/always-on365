@@ -1278,6 +1278,27 @@
       background: #005bb0;
     }
 
+    /* 회원탈퇴 전용 버튼 스타일 */
+    .mypage-delete-account-btn {
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid #cbd5e1;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+      transition: all 0.2s;
+    }
+
+    .mypage-delete-account-btn:hover {
+      background: #fee2e2;
+      color: var(--danger-color);
+      border-color: #fca5a5;
+    }
+
     @media (max-width: 992px) {
       .about-grid, .contact-grid { grid-template-columns: 1fr; }
       .counter-bar { grid-template-columns: 1fr 1fr; }
@@ -1541,7 +1562,7 @@
               </div>
             </div>
             <div class="portfolio-item">
-              <img src="https://images.unsplash.com/photo-1581091215367-9b6c00b3035a?auto=format&fit=crop&w=500&q=80" alt="HACCP 가공공장 전실">
+              <img src="https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=500&q=80" alt="HACCP 가공공장 전실">
               <div class="portfolio-overlay">
                 <h5>HACCP 축산가공 전실 시공</h5>
               </div>
@@ -1977,7 +1998,7 @@
     </div>
   </div>
 
-  <!-- 마이페이지 모달 창 -->
+  <!-- 마이페이지 모달 창 (회원탈퇴 버튼 추가) -->
   <div class="auth-modal-overlay" id="myPageModal">
     <div class="auth-modal-box">
       <button type="button" class="auth-close-btn" onclick="closeMyPageModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -2038,7 +2059,13 @@
         <button type="button" class="mypage-mini-btn" onclick="updatePassword()">비밀번호 변경</button>
       </div>
 
+      <!-- 닫기 버튼 -->
       <button type="button" class="auth-submit-btn" style="background:#64748b; margin-top:10px;" onclick="closeMyPageModal()">닫기</button>
+
+      <!-- 마이페이지 맨 밑 회원탈퇴 버튼 -->
+      <button type="button" class="mypage-delete-account-btn" onclick="handleUserWithdrawal()">
+        <i class="fa-solid fa-user-xmark" style="margin-right: 5px;"></i> 늘온이엔지 회원탈퇴
+      </button>
     </div>
   </div>
 
@@ -2364,7 +2391,6 @@
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       const adminList = getAdminEmails();
 
-      // Firebase 클라우드 DB에서 최신 회원 및 견적 데이터 실시간 수신
       if (db) {
         try {
           const userSnap = await db.collection("users").get();
@@ -2614,7 +2640,7 @@
     }
 
     // ----------------------------------------------------
-    // 6. 회원 인증 및 마이페이지 로직 (Firebase 연동)
+    // 6. 회원 인증 및 마이페이지 / 회원탈퇴 로직
     // ----------------------------------------------------
     let isSignupPhoneVerified = false;
     let isEmailChecked = false;
@@ -2728,12 +2754,10 @@
         pw: document.getElementById('regPw')?.value || ''
       };
 
-      // 1) 로컬스토리지 저장
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       userList.push(newUser);
       localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
 
-      // 2) Firebase Firestore 클라우드 저장
       if (db) {
         try {
           await db.collection("users").doc(newUser.email).set(newUser);
@@ -2755,7 +2779,6 @@
 
       let foundUser = null;
 
-      // 1) Firebase Firestore에서 회원 조회
       if (db) {
         try {
           const doc = await db.collection("users").doc(email).get();
@@ -2770,7 +2793,6 @@
         }
       }
 
-      // 2) 로컬스토리지 백업 조회
       if (!foundUser) {
         let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
         if (!userList.some(u => u.email === "mjeong228@naver.com")) {
@@ -2984,6 +3006,70 @@
       } else {
         alert('해당 이메일의 회원 정보를 찾을 수 없습니다.');
       }
+    }
+
+    // ----------------------------------------------------
+    // 회원탈퇴 로직 (Firebase & LocalStorage 동시 영구 삭제)
+    // ----------------------------------------------------
+    async function handleUserWithdrawal() {
+      const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
+      if (!currentUser || !currentUser.email) {
+        alert('로그인 상태를 확인할 수 없습니다.');
+        return;
+      }
+
+      if (DEFAULT_ADMIN_EMAILS.includes(currentUser.email)) {
+        alert('최고 관리자 계정은 탈퇴할 수 없습니다.');
+        return;
+      }
+
+      const confirmWithdrawal = confirm(
+        `정말로 늘온이엔지 회원에서 탈퇴하시겠습니까?\n\n탈퇴 시 등록된 기업 정보 및 견적 이력이 안전하게 영구 삭제되며 복구할 수 없습니다.`
+      );
+
+      if (!confirmWithdrawal) return;
+
+      const inputPw = prompt("본인 확인을 위해 현재 비밀번호를 입력해 주세요:");
+      if (!inputPw) {
+        alert('비밀번호가 입력되지 않아 탈퇴가 취소되었습니다.');
+        return;
+      }
+
+      if (inputPw !== currentUser.pw) {
+        alert('비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
+        return;
+      }
+
+      const userEmail = currentUser.email;
+
+      // 1) Firebase Firestore에서 회원 삭제
+      if (db) {
+        try {
+          await db.collection("users").doc(userEmail).delete();
+        } catch(e) {
+          console.warn("Firebase User Withdrawal Delete Error:", e);
+        }
+      }
+
+      // 2) 로컬스토리지 회원 목록에서 삭제
+      let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
+      userList = userList.filter(u => u.email !== userEmail);
+      localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
+
+      // 3) 관리자 목록에서 삭제 (관리자로 지정되어 있었을 경우)
+      let adminList = getAdminEmails();
+      adminList = adminList.filter(e => e !== userEmail);
+      localStorage.setItem('alwayson_admin_emails', JSON.stringify(adminList));
+
+      // 4) 현재 세션 로그아웃
+      localStorage.removeItem('alwayson_current_user');
+
+      // 5) 모달 닫기 및 홈 화면 복귀
+      closeMyPageModal();
+      checkLoginStatus();
+      navigateToPage('home');
+
+      alert('늘온이엔지 회원탈퇴가 정상적으로 완료되었습니다.\n그동안 서비스를 이용해 주셔서 감사합니다.');
     }
 
     function openAuthModal(type) {
