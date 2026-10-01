@@ -14,6 +14,10 @@
   <!-- Daum 우편번호 API -->
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+  <!-- Firebase SDK (v8 호환 모드: GitHub Pages 정적 웹 최적화) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
   <style>
     :root {
       --primary-color: #0b2545;
@@ -1537,7 +1541,7 @@
               </div>
             </div>
             <div class="portfolio-item">
-              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=500&q=80" alt="HACCP 가공공장 전실">
+              <img src="https://images.unsplash.com/photo-1581091215367-9b6c00b3035a?auto=format&fit=crop&w=500&q=80" alt="HACCP 가공공장 전실">
               <div class="portfolio-overlay">
                 <h5>HACCP 축산가공 전실 시공</h5>
               </div>
@@ -1738,7 +1742,7 @@
             </div>
           </div>
 
-          <!-- 1. 견적 접수 이력 테이블 (선택 항목 삭제 버튼 추가) -->
+          <!-- 1. 견적 접수 이력 테이블 -->
           <div class="admin-table-box">
             <div class="box-header">
               <h3><i class="fa-solid fa-calculator" style="color: var(--point-color);"></i> 실시간 온라인 견적 접수 내역</h3>
@@ -1776,7 +1780,7 @@
             </div>
           </div>
 
-          <!-- 2. 가입 회원 관리 테이블 (관리자 지정/해제 기능 추가) -->
+          <!-- 2. 가입 회원 관리 테이블 -->
           <div class="admin-table-box">
             <div class="box-header">
               <h3><i class="fa-solid fa-users" style="color: var(--admin-color);"></i> 등록 기업 회원 목록 (관리자 권한 부여)</h3>
@@ -2040,7 +2044,30 @@
 
   <script>
     // ----------------------------------------------------
-    // 관리자 계정 목록 및 동적 관리자 판별
+    // Firebase Cloud Firestore 초기화 연동
+    // ----------------------------------------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyAp-uvxRAoh3yxHgsrPWmYjwgzdHdD_UAI",
+      authDomain: "always-on-365.firebaseapp.com",
+      projectId: "always-on-365",
+      storageBucket: "always-on-365.firebasestorage.app",
+      messagingSenderId: "15837831502",
+      appId: "1:15837831502:web:718f8bc73d5e76c59ebe1f",
+      measurementId: "G-D4QCGZ78LZ"
+    };
+
+    let db = null;
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      db = firebase.firestore();
+    } catch(e) {
+      console.warn("Firebase Init Error:", e);
+    }
+
+    // ----------------------------------------------------
+    // 관리자 계정 목록 및 권한 판별
     // ----------------------------------------------------
     const DEFAULT_ADMIN_EMAILS = [
       "mjeong228@naver.com",
@@ -2188,11 +2215,11 @@
     }
 
     // ----------------------------------------------------
-    // 4. 견적서 접수 및 전송
+    // 4. 견적서 접수 및 전송 (Firebase & FormSubmit 동시 저장)
     // ----------------------------------------------------
     let currentCalcData = {};
 
-    function handleQuoteSubmit(e) {
+    async function handleQuoteSubmit(e) {
       e.preventDefault();
       const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       if (!currentUser) {
@@ -2266,10 +2293,21 @@
         status: "접수완료"
       };
 
+      // 1) 로컬스토리지 백업 저장
       let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       quoteList.unshift(quoteRecord);
       localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
 
+      // 2) Firebase 클라우드 DB 저장
+      if (db) {
+        try {
+          await db.collection("quotes").doc(String(quoteRecord.id)).set(quoteRecord);
+        } catch(err) {
+          console.warn("Firebase Quotes Save Error:", err);
+        }
+      }
+
+      // 3) FormSubmit 이메일 전송
       const payload = {
         _subject: `[늘온이엔지 견적접수] ${quoteRecord.company} -${quoteRecord.project}`,
         접수일시: quoteRecord.date,
@@ -2319,12 +2357,36 @@
     }
 
     // ----------------------------------------------------
-    // 5. 관리자 콘솔 대시보드 / 삭제 / 관리자 지정 로직
+    // 5. 관리자 콘솔 대시보드 / Firebase 실시간 동기화
     // ----------------------------------------------------
-    function renderAdminDashboard() {
-      const quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
-      const userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
+    async function renderAdminDashboard() {
+      let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
+      let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       const adminList = getAdminEmails();
+
+      // Firebase 클라우드 DB에서 최신 회원 및 견적 데이터 실시간 수신
+      if (db) {
+        try {
+          const userSnap = await db.collection("users").get();
+          const fbUsers = [];
+          userSnap.forEach(doc => fbUsers.push(doc.data()));
+          if (fbUsers.length > 0) {
+            userList = fbUsers;
+            localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
+          }
+
+          const quoteSnap = await db.collection("quotes").get();
+          const fbQuotes = [];
+          quoteSnap.forEach(doc => fbQuotes.push(doc.data()));
+          if (fbQuotes.length > 0) {
+            fbQuotes.sort((a,b) => (b.id || 0) - (a.id || 0));
+            quoteList = fbQuotes;
+            localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
+          }
+        } catch(err) {
+          console.warn("Firebase Fetch Warning:", err);
+        }
+      }
 
       const qcEl = document.getElementById('statQuoteCount');
       const ucEl = document.getElementById('statUserCount');
@@ -2366,7 +2428,7 @@
         }
       }
 
-      // 2) 회원 목록 렌더링 (관리자 지정 버튼 포함)
+      // 2) 회원 목록 렌더링
       const uTbody = document.getElementById('adminUserTableBody');
       if (uTbody) {
         if (userList.length === 0) {
@@ -2406,8 +2468,7 @@
       }
     }
 
-    // 선택 견적 삭제 함수
-    function deleteSelectedQuotes() {
+    async function deleteSelectedQuotes() {
       const checkedBoxes = document.querySelectorAll('.quote-select-item:checked');
       if (checkedBoxes.length === 0) {
         alert('삭제할 견적 내역을 하나 이상 선택해 주세요.');
@@ -2419,12 +2480,20 @@
         let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
         quoteList = quoteList.filter(q => !selectedIds.includes(q.id));
         localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
+
+        if (db) {
+          for (let id of selectedIds) {
+            try {
+              await db.collection("quotes").doc(String(id)).delete();
+            } catch(e) {}
+          }
+        }
+
         renderAdminDashboard();
         alert('선택한 견적 내역이 성공적으로 삭제되었습니다.');
       }
     }
 
-    // 관리자 권한 지정 / 해제 함수
     function toggleAdminRole(email, grant) {
       let adminList = getAdminEmails();
 
@@ -2453,16 +2522,21 @@
       checkboxes.forEach(cb => cb.checked = masterCheck.checked);
     }
 
-    function changeQuoteStatus(id, newStatus) {
+    async function changeQuoteStatus(id, newStatus) {
       let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
       const item = quoteList.find(q => q.id === id);
       if (item) {
         item.status = newStatus;
         localStorage.setItem('alwayson_quote_list', JSON.stringify(quoteList));
+        if (db) {
+          try {
+            await db.collection("quotes").doc(String(id)).update({ status: newStatus });
+          } catch(e) {}
+        }
       }
     }
 
-    function adminDeleteUser(email) {
+    async function adminDeleteUser(email) {
       if (DEFAULT_ADMIN_EMAILS.includes(email)) {
         alert('최고 관리자 계정은 삭제할 수 없습니다.');
         return;
@@ -2472,10 +2546,15 @@
         userList = userList.filter(u => u.email !== email);
         localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
 
-        // 관리자 목록에서도 제거
         let adminList = getAdminEmails();
         adminList = adminList.filter(e => e !== email);
         localStorage.setItem('alwayson_admin_emails', JSON.stringify(adminList));
+
+        if (db) {
+          try {
+            await db.collection("users").doc(email).delete();
+          } catch(e) {}
+        }
 
         renderAdminDashboard();
       }
@@ -2535,21 +2614,31 @@
     }
 
     // ----------------------------------------------------
-    // 6. 회원 인증 및 마이페이지 로직
+    // 6. 회원 인증 및 마이페이지 로직 (Firebase 연동)
     // ----------------------------------------------------
     let isSignupPhoneVerified = false;
     let isEmailChecked = false;
     const DEMO_AUTH_CODE = "1234";
 
-    function checkEmailDuplicate() {
+    async function checkEmailDuplicate() {
       const email = document.getElementById('regEmail')?.value;
       if (!email || !email.includes('@')) {
         alert('올바른 이메일 주소를 입력해주세요.');
         return;
       }
 
-      const users = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
-      const isExist = users.some(u => u.email === email);
+      let isExist = false;
+      if (db) {
+        try {
+          const doc = await db.collection("users").doc(email).get();
+          if (doc.exists) isExist = true;
+        } catch(e) {}
+      }
+
+      if (!isExist) {
+        const users = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
+        if (users.some(u => u.email === email)) isExist = true;
+      }
 
       if (isExist) {
         alert('이미 등록된 이메일(아이디)입니다. 다른 이메일을 입력해주세요.');
@@ -2616,7 +2705,7 @@
       }
     }
 
-    function handleSignup(e) {
+    async function handleSignup(e) {
       e.preventDefault();
       if (!isEmailChecked) {
         alert('이메일 중복 확인을 진행해주세요.');
@@ -2639,9 +2728,19 @@
         pw: document.getElementById('regPw')?.value || ''
       };
 
+      // 1) 로컬스토리지 저장
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       userList.push(newUser);
       localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
+
+      // 2) Firebase Firestore 클라우드 저장
+      if (db) {
+        try {
+          await db.collection("users").doc(newUser.email).set(newUser);
+        } catch(err) {
+          console.warn("Firebase User Save Error:", err);
+        }
+      }
 
       alert('회원가입이 완료되었습니다! 로그인해 주세요.');
       switchAuthTab('login');
@@ -2649,29 +2748,47 @@
       if (loginEm) loginEm.value = newUser.email;
     }
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail')?.value;
       const pw = document.getElementById('loginPw')?.value;
 
-      let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
-      
-      if (!userList.some(u => u.email === "mjeong228@naver.com")) {
-        userList.push({
-          company: "(주)늘온이엔지 본사",
-          bizNo: "123-45-67890",
-          postcode: "15433",
-          address: "경기도 안산시 단원구",
-          addressDetail: "본사 관리팀",
-          name: "총괄관리자",
-          email: "mjeong228@naver.com",
-          phone: "010-0000-0000",
-          pw: "admin1234!"
-        });
-        localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
+      let foundUser = null;
+
+      // 1) Firebase Firestore에서 회원 조회
+      if (db) {
+        try {
+          const doc = await db.collection("users").doc(email).get();
+          if (doc.exists) {
+            const data = doc.data();
+            if (data.pw === pw) {
+              foundUser = data;
+            }
+          }
+        } catch(err) {
+          console.warn("Firebase Login Check Warning:", err);
+        }
       }
 
-      const foundUser = userList.find(u => u.email === email && u.pw === pw);
+      // 2) 로컬스토리지 백업 조회
+      if (!foundUser) {
+        let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
+        if (!userList.some(u => u.email === "mjeong228@naver.com")) {
+          userList.push({
+            company: "(주)늘온이엔지 본사",
+            bizNo: "123-45-67890",
+            postcode: "15433",
+            address: "경기도 안산시 단원구",
+            addressDetail: "본사 관리팀",
+            name: "총괄관리자",
+            email: "mjeong228@naver.com",
+            phone: "010-0000-0000",
+            pw: "admin1234!"
+          });
+          localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
+        }
+        foundUser = userList.find(u => u.email === email && u.pw === pw);
+      }
 
       if (foundUser) {
         localStorage.setItem('alwayson_current_user', JSON.stringify(foundUser));
@@ -2741,7 +2858,7 @@
       }
     }
 
-    function updateCompanyInfo() {
+    async function updateCompanyInfo() {
       const newCompany = document.getElementById('mpEditCompany')?.value;
       const newBizNo = document.getElementById('mpEditBizNo')?.value;
       const newName = document.getElementById('mpEditName')?.value;
@@ -2759,11 +2876,23 @@
       currentUser.addressDetail = newAddressDetail;
 
       syncUserStorage(currentUser);
+
+      if (db) {
+        try {
+          await db.collection("users").doc(currentUser.email).update({
+            company: newCompany,
+            bizNo: newBizNo,
+            name: newName,
+            addressDetail: newAddressDetail
+          });
+        } catch(e) {}
+      }
+
       alert('기업 정보가 성공적으로 변경되었습니다.');
       checkLoginStatus();
     }
 
-    function updatePassword() {
+    async function updatePassword() {
       const curPw = document.getElementById('mpCurrentPw')?.value;
       const newPw = document.getElementById('mpNewPw')?.value;
 
@@ -2780,6 +2909,13 @@
 
       currentUser.pw = newPw;
       syncUserStorage(currentUser);
+
+      if (db) {
+        try {
+          await db.collection("users").doc(currentUser.email).update({ pw: newPw });
+        } catch(e) {}
+      }
+
       alert('비밀번호가 성공적으로 변경되었습니다.');
       const p1 = document.getElementById('mpCurrentPw');
       const p2 = document.getElementById('mpNewPw');
@@ -2787,11 +2923,16 @@
       if (p2) p2.value = '';
     }
 
-    function updateUserField(field, value) {
+    async function updateUserField(field, value) {
       let currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       if (currentUser) {
         currentUser[field] = value;
         syncUserStorage(currentUser);
+        if (db) {
+          try {
+            await db.collection("users").doc(currentUser.email).update({ [field]: value });
+          } catch(e) {}
+        }
         checkLoginStatus();
       }
     }
@@ -2806,7 +2947,7 @@
       }
     }
 
-    function handlePasswordReset(e) {
+    async function handlePasswordReset(e) {
       e.preventDefault();
       const newPw = document.getElementById('newPw')?.value;
       const newPwConfirm = document.getElementById('newPwConfirm')?.value;
@@ -2817,11 +2958,27 @@
         return;
       }
 
+      let isSuccess = false;
+
+      if (db) {
+        try {
+          const doc = await db.collection("users").doc(email).get();
+          if (doc.exists) {
+            await db.collection("users").doc(email).update({ pw: newPw });
+            isSuccess = true;
+          }
+        } catch(e) {}
+      }
+
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       const user = userList.find(u => u.email === email);
       if (user) {
         user.pw = newPw;
         localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
+        isSuccess = true;
+      }
+
+      if (isSuccess) {
         alert('비밀번호가 재설정되었습니다! 새 비밀번호로 로그인해주세요.');
         switchAuthTab('login');
       } else {
@@ -2999,7 +3156,7 @@
     }
 
     // ----------------------------------------------------
-    // 초기 로드 시 실행 (에러 없이 안전 로딩)
+    // 초기 로드 시 실행 (Firebase 동기화 및 렌더링)
     // ----------------------------------------------------
     window.onload = function() {
       try {
