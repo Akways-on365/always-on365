@@ -441,58 +441,148 @@
       line-height: 1.6;
     }
 
-    /* ---------------- 3. 주요 실적 ---------------- */
-    .counter-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      text-align: center;
-      margin-bottom: 50px;
+    /* ---------------- 3. 주요 실적 (첨부 사진 스타일 반영) ---------------- */
+    .portfolio-top-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 35px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 10px;
     }
 
-    .counter-item h3 {
-      font-size: 2.8rem;
-      font-weight: 800;
+    .portfolio-tab-link {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      padding: 8px 16px;
+      position: relative;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .portfolio-tab-link:hover,
+    .portfolio-tab-link.active {
       color: var(--point-color);
     }
 
-    .counter-item p {
-      color: var(--text-gray);
+    .portfolio-tab-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -11px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--point-color);
+    }
+
+    .portfolio-section-intro {
+      margin-bottom: 30px;
+    }
+
+    .portfolio-section-intro .sub-tag {
+      color: var(--point-color);
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .portfolio-section-intro .main-head {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #0b2545;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .portfolio-section-intro .main-head span {
+      font-size: 1.1rem;
       font-weight: 600;
+      color: #94a3b8;
     }
 
-    .portfolio-grid {
+    .portfolio-admin-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .portfolio-grid-cards {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
     }
 
-    .portfolio-item {
-      position: relative;
-      border-radius: 8px;
+    .portfolio-card-item {
+      background: #ffffff;
+      border-radius: 4px;
       overflow: hidden;
-      height: 240px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
     }
 
-    .portfolio-item img {
+    .portfolio-card-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .portfolio-card-imgwrap {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background: #f1f5f9;
+      position: relative;
+    }
+
+    .portfolio-card-imgwrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s;
+      display: block;
+      transition: transform 0.3s;
     }
 
-    .portfolio-item:hover img {
-      transform: scale(1.08);
+    .portfolio-card-item:hover .portfolio-card-imgwrap img {
+      transform: scale(1.05);
     }
 
-    .portfolio-overlay {
+    .portfolio-card-caption {
+      padding: 16px 14px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .portfolio-delete-btn {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(transparent, rgba(11, 37, 69, 0.9));
-      padding: 20px 15px 10px;
-      color: var(--white);
+      top: 10px;
+      right: 10px;
+      background: rgba(239, 68, 68, 0.9);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .portfolio-delete-btn:hover {
+      background: #dc2626;
     }
 
     /* ---------------- 4. 온라인 견적 시스템 ---------------- */
@@ -1113,7 +1203,7 @@
       font-weight: 600;
     }
 
-    .auth-form-group input {
+    .auth-form-group input, .auth-form-group select {
       width: 100%;
       padding: 10px 14px;
       border: 1px solid var(--border-color);
@@ -1123,7 +1213,7 @@
       transition: border-color 0.2s;
     }
 
-    .auth-form-group input:focus {
+    .auth-form-group input:focus, .auth-form-group select:focus {
       border-color: var(--point-color);
     }
 
@@ -1301,7 +1391,7 @@
     @media (max-width: 992px) {
       .about-grid, .contact-grid { grid-template-columns: 1fr; }
       .counter-bar { grid-template-columns: 1fr 1fr; }
-      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .portfolio-grid-cards { grid-template-columns: 1fr 1fr; }
       .meta-grid { grid-template-columns: 1fr 1fr; }
       .rec-final-banner { flex-direction: column; text-align: center; gap: 14px; }
       .rec-final-tag { text-align: center; width: 100%; }
@@ -1313,7 +1403,7 @@
     @media (max-width: 768px) {
       .nav-menu { display: none; }
       .counter-bar { grid-template-columns: 1fr; }
-      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-grid-cards { grid-template-columns: 1fr; }
       .meta-grid { grid-template-columns: 1fr; }
       .model-tab-btn { padding: 12px 24px; font-size: 1rem; }
     }
@@ -1520,58 +1610,35 @@
       </section>
     </div>
 
-    <!-- [VIEW 3] 주요 실적 뷰 -->
+    <!-- [VIEW 3] 주요 실적 뷰 (사진 첨부 스타일로 개편) -->
     <div id="view-portfolio" class="page-view">
-      <section id="portfolio">
+      <section id="portfolio" class="bg-light">
         <div class="container">
-          <div class="section-header">
-            <span class="section-subtitle">PERFORMANCE & PROJECTS</span>
-            <h2 class="section-title">주요 실적</h2>
+          <!-- 상단 탭 (시공실적 / 설계실적) -->
+          <div class="portfolio-top-tabs">
+            <a class="portfolio-tab-link active" id="tab-port-const" onclick="switchPortfolioCategory('const')">시공실적</a>
+            <a class="portfolio-tab-link" id="tab-port-design" onclick="switchPortfolioCategory('design')">설계실적</a>
           </div>
-          <div class="counter-bar">
-            <div class="counter-item">
-              <h3>500+</h3>
-              <p>창고 시공 실적</p>
-            </div>
-            <div class="counter-item">
-              <h3>99.9%</h3>
-              <p>온도 제어 안정률</p>
-            </div>
-            <div class="counter-item">
-              <h3>150+</h3>
-              <p>국내 파트너사</p>
-            </div>
-            <div class="counter-item">
-              <h3>365</h3>
-              <p>올웨이즈 기술 서포트</p>
+
+          <!-- 섹션 인트로 헤더 -->
+          <div class="portfolio-section-intro">
+            <span class="sub-tag">주요실적</span>
+            <div class="main-head">
+              <span id="portCategoryTitleText" style="font-size:2.2rem; font-weight:900; color:#0b2545;">시공실적</span>
+              <span id="portCategorySubText">Construction Reference</span>
             </div>
           </div>
 
-          <div class="portfolio-grid">
-            <div class="portfolio-item">
-              <img src="https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80" alt="대형 저온물류센터">
-              <div class="portfolio-overlay">
-                <h5>식품 저온물류센터 구축</h5>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=500&q=80" alt="바이오 저온보관고">
-              <div class="portfolio-overlay">
-                <h5>의약품·바이오 정온창고 설비</h5>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="https://images.unsplash.com/photo-1581091215367-9b6c00b3035a?auto=format&fit=crop&w=500&q=80" alt="HACCP 가공공장 전실">
-              <div class="portfolio-overlay">
-                <h5>HACCP 축산가공 전실 시공</h5>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=500&q=80" alt="급속 동결실">
-              <div class="portfolio-overlay">
-                <h5>수산물 급속 동결설비 제작</h5>
-              </div>
-            </div>
+          <!-- 관리자 전용 실적 사진 추가 바 (관리자만 노출) -->
+          <div class="portfolio-admin-bar" id="portfolioAdminBar" style="display:none;">
+            <button type="button" class="btn-main btn-main-primary" onclick="openPortfolioUploadModal()" style="font-size:0.88rem; padding:9px 18px;">
+              <i class="fa-solid fa-plus-circle"></i> 새 실적 등록하기 (관리자)
+            </button>
+          </div>
+
+          <!-- 실적 카드 그리드 -->
+          <div class="portfolio-grid-cards" id="portfolioCardGrid">
+            <!-- 동적 렌더링 -->
           </div>
         </div>
       </section>
@@ -1800,7 +1867,7 @@
             </div>
           </div>
 
-          <!-- 2. 가입 회원 관리 테이블 (권한 변경 기능 적용) -->
+          <!-- 2. 가입 회원 관리 테이블 -->
           <div class="admin-table-box">
             <div class="box-header">
               <h3><i class="fa-solid fa-users" style="color: var(--admin-color);"></i> 등록 기업 회원 목록 (회원 권한 관리)</h3>
@@ -1899,7 +1966,7 @@
           <label>회사 주소 <span class="req-star">* 필수</span></label>
           <div class="input-with-btn" style="margin-bottom: 6px;">
             <input type="text" id="regPostcode" placeholder="우편번호" readonly style="background:#f1f5f9; width:35%;" required>
-            <button type="button" class="input-btn-action" onclick="openDaumPostcodeModal()">우편번호 검색</button>
+            <button type="button" class="input-btn-action" onclick="openDaumPostcodeModal('signup')">우편번호 검색</button>
           </div>
           <input type="text" id="regAddress" placeholder="기본주소 (도로명주소)" readonly style="background:#f1f5f9; margin-bottom: 6px;" required>
           <input type="text" id="regAddressDetail" placeholder="상세주소 (동·호수 입력)" required>
@@ -1997,7 +2064,7 @@
     </div>
   </div>
 
-  <!-- 마이페이지 모달 창 -->
+  <!-- 마이페이지 모달 창 (주소 검색 수정 기능 완벽 추가) -->
   <div class="auth-modal-overlay" id="myPageModal">
     <div class="auth-modal-box">
       <button type="button" class="auth-close-btn" onclick="closeMyPageModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -2015,10 +2082,14 @@
           <label>사업자 등록번호</label>
           <input type="text" id="mpEditBizNo">
         </div>
+        <!-- 마이페이지 주소 수정 필드 -->
         <div class="auth-form-group">
           <label>회사 주소</label>
-          <input type="text" id="mpEditAddress" readonly style="background:#f1f5f9; margin-bottom:6px;">
-          <input type="text" id="mpEditAddressDetail" placeholder="상세주소">
+          <div class="input-with-btn" style="margin-bottom: 6px;">
+            <input type="text" id="mpEditAddress" readonly style="background:#f1f5f9;" placeholder="기본주소 (도로명주소)">
+            <button type="button" class="input-btn-action" onclick="openDaumPostcodeModal('mypage')">우편번호 검색</button>
+          </div>
+          <input type="text" id="mpEditAddressDetail" placeholder="상세주소 (동·호수 입력)">
         </div>
         <div class="auth-form-group">
           <label>담당자 성명</label>
@@ -2067,6 +2138,47 @@
     </div>
   </div>
 
+  <!-- [관리자 전용] 주요 실적 사진 등록 모달 -->
+  <div class="auth-modal-overlay" id="portfolioUploadModal">
+    <div class="auth-modal-box">
+      <button type="button" class="auth-close-btn" onclick="closePortfolioUploadModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h3 style="font-size:1.35rem; color:var(--primary-color); margin-bottom:18px;">
+        <i class="fa-solid fa-camera-retro" style="color:var(--point-color);"></i> 새 실적 사진 등록 (관리자)
+      </h3>
+
+      <form id="portfolioUploadForm" onsubmit="handlePortfolioUpload(event)">
+        <div class="auth-form-group">
+          <label>실적 분류 *</label>
+          <select id="portCategorySelect" required>
+            <option value="const">시공실적 (Construction Reference)</option>
+            <option value="design">설계실적 (Design Reference)</option>
+          </select>
+        </div>
+
+        <div class="auth-form-group">
+          <label>프로젝트 명칭 (사진 아래 캡션 문구) *</label>
+          <input type="text" id="portTitleInput" placeholder="예: 인천신항물류센터 냉동설비신축공사" required>
+        </div>
+
+        <div class="auth-form-group">
+          <label>현장 사진 파일 첨부 (PC에서 선택) *</label>
+          <input type="file" id="portFileInput" accept="image/*" onchange="previewPortfolioFile(this)">
+        </div>
+
+        <div class="auth-form-group">
+          <label>또는 이미지 URL 직접 입력</label>
+          <input type="url" id="portUrlInput" placeholder="https://example.com/photo.jpg">
+        </div>
+
+        <div id="portImagePreviewBox" style="display:none; margin: 12px 0; text-align:center; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden; max-height:200px;">
+          <img id="portImagePreview" src="" alt="미리보기" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+
+        <button type="submit" id="btnSubmitPortfolio" class="auth-submit-btn">실적 등록 완료</button>
+      </form>
+    </div>
+  </div>
+
   <script>
     // ----------------------------------------------------
     // Firebase Cloud Firestore 초기화 연동
@@ -2094,7 +2206,7 @@
     // ----------------------------------------------------
     // 관리자 계정 목록 및 실시간 권한 판별
     // ----------------------------------------------------
-    const ROOT_ADMIN_EMAIL = "mjeong228@naver.com"; // 초기 최고관리자 계정
+    const ROOT_ADMIN_EMAIL = "mjeong228@naver.com";
 
     function isAdminUser(user) {
       if (!user || !user.email) return false;
@@ -2148,6 +2260,9 @@
         if (pageKey === 'estimate') {
           runExcelCalculation();
         }
+        if (pageKey === 'portfolio') {
+          loadPortfolioCards();
+        }
       } catch (err) {
         console.error("Navigation error:", err);
       }
@@ -2177,9 +2292,12 @@
     }
 
     // ----------------------------------------------------
-    // 3. 도로명 주소 검색 (Daum Postcode)
+    // 3. 도로명 주소 검색 (Daum Postcode - 회원가입 및 마이페이지 공용)
     // ----------------------------------------------------
-    function openDaumPostcodeModal() {
+    let currentPostcodeTarget = 'signup'; // 'signup' or 'mypage'
+
+    function openDaumPostcodeModal(target) {
+      currentPostcodeTarget = target || 'signup';
       const wrap = document.getElementById('postcodeModalWrap');
       const container = document.getElementById('postcodeFrameContainer');
       if (!container) return;
@@ -2202,16 +2320,19 @@
             }
           }
 
-          const postEl = document.getElementById('regPostcode');
-          const addrEl = document.getElementById('regAddress');
-          if (postEl) postEl.value = data.zonecode;
-          if (addrEl) addrEl.value = fullAddr;
+          if (currentPostcodeTarget === 'signup') {
+            const postEl = document.getElementById('regPostcode');
+            const addrEl = document.getElementById('regAddress');
+            if (postEl) postEl.value = data.zonecode;
+            if (addrEl) addrEl.value = fullAddr;
+            setTimeout(() => document.getElementById('regAddressDetail')?.focus(), 150);
+          } else if (currentPostcodeTarget === 'mypage') {
+            const addrEl = document.getElementById('mpEditAddress');
+            if (addrEl) addrEl.value = fullAddr;
+            setTimeout(() => document.getElementById('mpEditAddressDetail')?.focus(), 150);
+          }
 
           closeDaumPostcodeModal();
-          setTimeout(function() {
-            const detailEl = document.getElementById('regAddressDetail');
-            if (detailEl) detailEl.focus();
-          }, 150);
         },
         width: '100%',
         height: '100%'
@@ -2228,7 +2349,198 @@
     }
 
     // ----------------------------------------------------
-    // 4. 견적서 접수 및 전송
+    // 4. 주요 실적 갤러리 (시공실적 / 설계실적) & 관리자 업로드/삭제
+    // ----------------------------------------------------
+    let currentPortfolioCategory = 'const'; // 'const' or 'design'
+    let uploadedPortfolioBase64 = "";
+
+    // 기본 샘플 데이터 (사진1 참조)
+    const DEFAULT_PORTFOLIOS = [
+      { id: 1, category: 'const', title: '인천신항물류센터 냉동설비신축공사', image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80' },
+      { id: 2, category: 'const', title: '용인 굿맨프리미어파트너스 급냉창고 설비공사', image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80' },
+      { id: 3, category: 'const', title: '파주 부루구루 냉동냉장창고 설비공사', image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80' },
+      { id: 4, category: 'const', title: '충북 진천 육가공 전실 항온항습 공사', image: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80' },
+      { id: 5, category: 'design', title: '김포 콜드체인 물류센터 HVAC 3D 설계', image: 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=600&q=80' },
+      { id: 6, category: 'design', title: '평택 냉동물류창고 제습덕트 및 배관 설계', image: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80' }
+    ];
+
+    function switchPortfolioCategory(cat) {
+      currentPortfolioCategory = cat;
+      const constTab = document.getElementById('tab-port-const');
+      const designTab = document.getElementById('tab-port-design');
+      const titleText = document.getElementById('portCategoryTitleText');
+      const subText = document.getElementById('portCategorySubText');
+
+      if (cat === 'const') {
+        constTab.classList.add('active');
+        designTab.classList.remove('active');
+        titleText.innerText = '시공실적';
+        subText.innerText = 'Construction Reference';
+      } else {
+        designTab.classList.add('active');
+        constTab.classList.remove('active');
+        titleText.innerText = '설계실적';
+        subText.innerText = 'Design Reference';
+      }
+
+      loadPortfolioCards();
+    }
+
+    async function loadPortfolioCards() {
+      let list = JSON.parse(localStorage.getItem('alwayson_portfolios') || '[]');
+      if (list.length === 0) {
+        list = [...DEFAULT_PORTFOLIOS];
+        localStorage.setItem('alwayson_portfolios', JSON.stringify(list));
+      }
+
+      // Firebase에서 실시간 실적 가져오기
+      if (db) {
+        try {
+          const snap = await db.collection("portfolios").get();
+          const fbList = [];
+          snap.forEach(doc => fbList.push(doc.data()));
+          if (fbList.length > 0) {
+            fbList.sort((a,b) => (b.id || 0) - (a.id || 0));
+            list = fbList;
+            localStorage.setItem('alwayson_portfolios', JSON.stringify(list));
+          }
+        } catch(e) {}
+      }
+
+      const grid = document.getElementById('portfolioCardGrid');
+      const adminBar = document.getElementById('portfolioAdminBar');
+      const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
+      const isUserAdmin = isAdminUser(currentUser);
+
+      if (adminBar) {
+        adminBar.style.display = isUserAdmin ? 'flex' : 'none';
+      }
+
+      const filtered = list.filter(item => item.category === currentPortfolioCategory);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding:50px 0; color:#94a3b8; font-weight:600;">등록된 실적이 없습니다.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const delBtnHtml = isUserAdmin 
+          ? `<button type="button" class="portfolio-delete-btn" onclick="deletePortfolioItem(${item.id})"><i class="fa-solid fa-trash"></i> 삭제</button>`
+          : '';
+
+        return `
+          <div class="portfolio-card-item">
+            ${delBtnHtml}
+            <div class="portfolio-card-imgwrap">
+              <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/600x400?text=늘온이엔지+실적';">
+            </div>
+            <div class="portfolio-card-caption" title="${item.title}">${item.title}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openPortfolioUploadModal() {
+      uploadedPortfolioBase64 = "";
+      document.getElementById('portfolioUploadForm').reset();
+      document.getElementById('portCategorySelect').value = currentPortfolioCategory;
+      document.getElementById('portImagePreviewBox').style.display = 'none';
+      document.getElementById('portfolioUploadModal').classList.add('active');
+    }
+
+    function closePortfolioUploadModal() {
+      document.getElementById('portfolioUploadModal').classList.remove('active');
+    }
+
+    function previewPortfolioFile(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadedPortfolioBase64 = e.target.result;
+          document.getElementById('portImagePreview').src = uploadedPortfolioBase64;
+          document.getElementById('portImagePreviewBox').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    async function handlePortfolioUpload(e) {
+      e.preventDefault();
+      const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
+      if (!isAdminUser(currentUser)) {
+        alert('관리자만 실적을 등록할 수 있습니다.');
+        return;
+      }
+
+      const cat = document.getElementById('portCategorySelect').value;
+      const title = document.getElementById('portTitleInput').value.trim();
+      const urlInput = document.getElementById('portUrlInput').value.trim();
+
+      let finalImageUrl = uploadedPortfolioBase64 || urlInput;
+      if (!finalImageUrl) {
+        alert('사진 파일을 첨부하거나 이미지 URL을 입력해주세요.');
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitPortfolio');
+      btn.innerText = "등록 중...";
+      btn.disabled = true;
+
+      const newRecord = {
+        id: Date.now(),
+        category: cat,
+        title: title,
+        image: finalImageUrl,
+        createdAt: new Date().toISOString()
+      };
+
+      // 1) 로컬 저장
+      let list = JSON.parse(localStorage.getItem('alwayson_portfolios') || '[]');
+      list.unshift(newRecord);
+      localStorage.setItem('alwayson_portfolios', JSON.stringify(list));
+
+      // 2) Firebase Firestore 저장
+      if (db) {
+        try {
+          await db.collection("portfolios").doc(String(newRecord.id)).set(newRecord);
+        } catch(err) {
+          console.warn("Portfolio Firebase Save Error:", err);
+        }
+      }
+
+      btn.innerText = "실적 등록 완료";
+      btn.disabled = false;
+      alert('새로운 실적이 성공적으로 등록되었습니다.');
+      closePortfolioUploadModal();
+      switchPortfolioCategory(cat);
+    }
+
+    async function deletePortfolioItem(id) {
+      const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
+      if (!isAdminUser(currentUser)) {
+        alert('관리자만 삭제할 수 있습니다.');
+        return;
+      }
+
+      if (confirm('해당 실적 사진을 삭제하시겠습니까?')) {
+        let list = JSON.parse(localStorage.getItem('alwayson_portfolios') || '[]');
+        list = list.filter(item => item.id !== id);
+        localStorage.setItem('alwayson_portfolios', JSON.stringify(list));
+
+        if (db) {
+          try {
+            await db.collection("portfolios").doc(String(id)).delete();
+          } catch(e) {}
+        }
+
+        loadPortfolioCards();
+        alert('실적이 성공적으로 삭제되었습니다.');
+      }
+    }
+
+    // ----------------------------------------------------
+    // 5. 견적서 접수 및 전송
     // ----------------------------------------------------
     let currentCalcData = {};
 
@@ -2367,7 +2679,7 @@
     }
 
     // ----------------------------------------------------
-    // 5. 관리자 콘솔 대시보드 / 권한 변경 시스템
+    // 6. 관리자 콘솔 대시보드 / 권한 변경 시스템
     // ----------------------------------------------------
     async function renderAdminDashboard() {
       let quoteList = JSON.parse(localStorage.getItem('alwayson_quote_list') || '[]');
@@ -2396,7 +2708,6 @@
         }
       }
 
-      // 관리자 권한을 가진 전체 이메일 추출
       const allAdmins = [ROOT_ADMIN_EMAIL];
       userList.forEach(u => {
         if (u.isAdmin && !allAdmins.includes(u.email)) {
@@ -2412,7 +2723,6 @@
       if (ucEl) ucEl.innerText = `${userList.length} 개사`;
       if (adminListText) adminListText.innerText = allAdmins.join(', ');
 
-      // 1) 견적 목록 렌더링
       const qTbody = document.getElementById('adminQuoteTableBody');
       const checkAll = document.getElementById('checkAllQuotes');
       if (checkAll) checkAll.checked = false;
@@ -2444,7 +2754,6 @@
         }
       }
 
-      // 2) 회원 목록 렌더링 (권한 변경 드롭다운)
       const uTbody = document.getElementById('adminUserTableBody');
       if (uTbody) {
         if (userList.length === 0) {
@@ -2485,7 +2794,6 @@
       }
     }
 
-    // 선택 견적 삭제
     async function deleteSelectedQuotes() {
       const checkedBoxes = document.querySelectorAll('.quote-select-item:checked');
       if (checkedBoxes.length === 0) {
@@ -2512,7 +2820,6 @@
       }
     }
 
-    // 회원 권한 변경 (일반회원 / 관리자 전환)
     async function changeUserRole(email, newRole) {
       if (email === ROOT_ADMIN_EMAIL) {
         alert('최고 관리자 계정의 권한은 변경할 수 없습니다.');
@@ -2521,7 +2828,6 @@
 
       const grantAdmin = (newRole === 'admin');
 
-      // 1) 로컬 사용자 리스트 업데이트
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
       const targetUser = userList.find(u => u.email === email);
       if (targetUser) {
@@ -2529,7 +2835,6 @@
         localStorage.setItem('alwayson_user_list', JSON.stringify(userList));
       }
 
-      // 2) Firebase Firestore 클라우드 DB에 isAdmin 플래그 영구 기록
       if (db) {
         try {
           await db.collection("users").doc(email).update({ isAdmin: grantAdmin });
@@ -2538,7 +2843,6 @@
         }
       }
 
-      // 3) 만약 현재 접속 중인 계정의 권한을 변경한 경우 즉시 반영
       const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       if (currentUser && currentUser.email === email) {
         currentUser.isAdmin = grantAdmin;
@@ -2552,7 +2856,7 @@
       }
 
       renderAdminDashboard();
-      alert(`[${email}] 계정이 '${grantAdmin ? '관리자' : '일반회원'}'(으)로 변경되었습니다.\n해당 회원의 관리자 모드 진입 권한이 즉시 ${grantAdmin ? '부여' : '차단'}됩니다.`);
+      alert(`[${email}] 계정이 '${grantAdmin ? '관리자' : '일반회원'}'(으)로 변경되었습니다.`);
     }
 
     function toggleSelectAllQuotes(masterCheck) {
@@ -2628,7 +2932,7 @@
     }
 
     // ----------------------------------------------------
-    // 6. 회원 인증 및 마이페이지 / 회원탈퇴 로직
+    // 7. 회원 인증 및 마이페이지 (주소 수정 기능 강화) / 회원탈퇴 로직
     // ----------------------------------------------------
     let isSignupPhoneVerified = false;
     let isEmailChecked = false;
@@ -2837,7 +3141,6 @@
 
       if (topAuthBar) {
         if (currentUser) {
-          // Firebase에서 실시간 관리자 권한 확인 (타 기기/관리자 지정 및 강등 즉시 반영)
           if (db && currentUser.email && currentUser.email !== ROOT_ADMIN_EMAIL) {
             try {
               const doc = await db.collection("users").doc(currentUser.email).get();
@@ -2882,13 +3185,21 @@
           if (telInput) telInput.value = '';
         }
       }
+
+      // 주요실적 탭의 관리자 업로드 바 상태 동기화
+      const adminBar = document.getElementById('portfolioAdminBar');
+      if (adminBar) {
+        adminBar.style.display = isAdminUser(currentUser) ? 'flex' : 'none';
+      }
     }
 
+    // 마이페이지 주소 및 기업정보 저장 (DB 실시간 반영)
     async function updateCompanyInfo() {
       const newCompany = document.getElementById('mpEditCompany')?.value;
       const newBizNo = document.getElementById('mpEditBizNo')?.value;
-      const newName = document.getElementById('mpEditName')?.value;
+      const newAddress = document.getElementById('mpEditAddress')?.value;
       const newAddressDetail = document.getElementById('mpEditAddressDetail')?.value;
+      const newName = document.getElementById('mpEditName')?.value;
 
       if (!newCompany || !newBizNo) {
         alert('회사명과 사업자 등록번호를 입력해주세요.');
@@ -2898,8 +3209,9 @@
       let currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       currentUser.company = newCompany;
       currentUser.bizNo = newBizNo;
-      currentUser.name = newName;
+      currentUser.address = newAddress;
       currentUser.addressDetail = newAddressDetail;
+      currentUser.name = newName;
 
       syncUserStorage(currentUser);
 
@@ -2908,13 +3220,14 @@
           await db.collection("users").doc(currentUser.email).update({
             company: newCompany,
             bizNo: newBizNo,
-            name: newName,
-            addressDetail: newAddressDetail
+            address: newAddress,
+            addressDetail: newAddressDetail,
+            name: newName
           });
         } catch(e) {}
       }
 
-      alert('기업 정보가 성공적으로 변경되었습니다.');
+      alert('기업 정보 및 주소가 성공적으로 변경되었습니다.');
       checkLoginStatus();
     }
 
@@ -3012,9 +3325,6 @@
       }
     }
 
-    // ----------------------------------------------------
-    // 회원탈퇴 로직
-    // ----------------------------------------------------
     async function handleUserWithdrawal() {
       const currentUser = JSON.parse(localStorage.getItem('alwayson_current_user'));
       if (!currentUser || !currentUser.email) {
@@ -3028,7 +3338,7 @@
       }
 
       const confirmWithdrawal = confirm(
-        `정말로 늘온이엔지 회원에서 탈퇴하시겠습니까?\n\n탈퇴 시 등록된 기업 정보 및 견적 이력이 안전하게 영구 삭제되며 복구할 수 없습니다.`
+        `정말로 늘온이엔지 회원에서 탈퇴하시겠습니까?\n\n탈퇴 시 등록된 기업 정보 및 견적 이력이 영구 삭제됩니다.`
       );
 
       if (!confirmWithdrawal) return;
@@ -3040,7 +3350,7 @@
       }
 
       if (inputPw !== currentUser.pw) {
-        alert('비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
+        alert('비밀번호가 일치하지 않습니다.');
         return;
       }
 
@@ -3049,9 +3359,7 @@
       if (db) {
         try {
           await db.collection("users").doc(userEmail).delete();
-        } catch(e) {
-          console.warn("Firebase User Withdrawal Delete Error:", e);
-        }
+        } catch(e) {}
       }
 
       let userList = JSON.parse(localStorage.getItem('alwayson_user_list') || '[]');
@@ -3064,7 +3372,7 @@
       checkLoginStatus();
       navigateToPage('home');
 
-      alert('늘온이엔지 회원탈퇴가 정상적으로 완료되었습니다.\n그동안 서비스를 이용해 주셔서 감사합니다.');
+      alert('회원탈퇴가 정상적으로 완료되었습니다.');
     }
 
     function openAuthModal(type) {
@@ -3091,7 +3399,7 @@
         const n = document.getElementById('mpEditName');
         if (c) c.value = user.company || '';
         if (b) b.value = user.bizNo || '';
-        if (a) a.value = user.address || '등록된 주소 없음';
+        if (a) a.value = user.address || '';
         if (d) d.value = user.addressDetail || '';
         if (n) n.value = user.name || '';
         
@@ -3141,7 +3449,7 @@
     }
 
     // ----------------------------------------------------
-    // 7. 온라인 견적 부하 계산 (침기계수 2.0 고정 & SRDU-140 분기)
+    // 8. 온라인 견적 부하 계산 (침기계수 2.0 고정 & SRDU-140 분기)
     // ----------------------------------------------------
     function runExcelCalculation() {
       try {
@@ -3243,12 +3551,15 @@
         const authM = document.getElementById('authModal');
         const postM = document.getElementById('postcodeModalWrap');
         const mypM = document.getElementById('myPageModal');
+        const portM = document.getElementById('portfolioUploadModal');
         if (authM) authM.classList.remove('active');
         if (postM) postM.classList.remove('active');
         if (mypM) mypM.classList.remove('active');
+        if (portM) portM.classList.remove('active');
 
         checkLoginStatus();
         runExcelCalculation();
+        loadPortfolioCards();
       } catch (loadErr) {
         console.error("Window onload error:", loadErr);
       }
