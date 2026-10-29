@@ -1416,10 +1416,79 @@
       navigateToPage('home');
     }
 
+// -------------------------------------------------------------------------
+    // 방금 복사하신 복구 함수들 (마이페이지, 관리자 대시보드, 주요 실적)
+    // -------------------------------------------------------------------------
+    function openMyPageModal() {
+      ...
+    }
+    async function updateCompanyInfo() {
+      ...
+    }
+    async function handleUserWithdrawal() {
+      ...
+    }
+    async function renderAdminDashboard() {
+      ...
+    }
+    async function loadPortfolioCards() {
+      ...
+    }
+
+    // 기존에 있던 로딩 및 실행부
+    window.onload = function() {
+      checkLoginStatus();
+      loadPortfolioCards(); // <-- 여기도 loadPortfolioCards()가 들어가야 실적이 뜹니다!
+      setTimeout(initThreeEngine, 100);
+    };
+  </script>
+
+  <!-- 마이페이지 모달 HTML -->
+  <div class="auth-modal-overlay" id="myPageModal">
+    ...
+  </div>
+
+</body>
+</html>
+
     window.onload = function() {
       checkLoginStatus();
       setTimeout(initThreeEngine, 100);
     };
   </script>
+
+<!-- 마이페이지 모달 -->
+  <div class="auth-modal-overlay" id="myPageModal">
+    <div class="auth-modal-box">
+      <button type="button" class="auth-close-btn" onclick="closeMyPageModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h3 style="font-size:1.35rem; color:var(--primary-color); margin-bottom:18px;">
+        <i class="fa-solid fa-user-circle" style="color:var(--point-color);"></i> 마이페이지
+      </h3>
+      <div class="mypage-section-card">
+        <div class="mypage-section-title"><i class="fa-solid fa-building"></i> 기업 및 기본 정보 변경</div>
+        <div class="auth-form-group">
+          <label>회사명</label>
+          <input type="text" id="mpEditCompany">
+        </div>
+        <div class="auth-form-group">
+          <label>사업자 등록번호</label>
+          <input type="text" id="mpEditBizNo">
+        </div>
+        <div class="auth-form-group">
+          <label>회사 주소</label>
+          <input type="text" id="mpEditAddress" placeholder="기본주소" style="margin-bottom:6px;">
+          <input type="text" id="mpEditAddressDetail" placeholder="상세주소">
+        </div>
+        <div class="auth-form-group">
+          <label>담당자 성명</label>
+          <input type="text" id="mpEditName">
+        </div>
+        <button type="button" class="mypage-mini-btn" onclick="updateCompanyInfo()">기업 정보 저장</button>
+      </div>
+      <button type="button" class="auth-submit-btn" style="background:#64748b;" onclick="closeMyPageModal()">닫기</button>
+      <button type="button" class="mypage-delete-account-btn" onclick="handleUserWithdrawal()"><i class="fa-solid fa-user-xmark"></i> 늘온이엔지 회원탈퇴</button>
+    </div>
+  </div>
+
 </body>
 </html>
